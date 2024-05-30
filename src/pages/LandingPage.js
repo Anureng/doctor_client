@@ -1,11 +1,12 @@
 import React from 'react'
 import NavBar from '../components/NavBar'
+import Footer from '../components/Footer'
 
 function LandingPage() {
   return (
    <>
-   {/* here is the navbar*/}
    <NavBar/>
+   <Footer/>
    </>
   )
 }
