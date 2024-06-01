@@ -3,9 +3,11 @@ import { CiSearch } from "react-icons/ci";
 import { IoIosArrowDown } from "react-icons/io";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RxCross1 } from "react-icons/rx";
+import { Link } from 'react-router-dom';
+
 
 function NavBar() {
-  const [open , setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
   return (
     <div className='text-white p-4'>
       <div className='bg-[#007569] rounded-full flex flex-col md:flex-row items-center justify-between p-4'>
@@ -15,24 +17,24 @@ function NavBar() {
         </div>
 
         <div>
-          <RxHamburgerMenu onClick={()=>setOpen(!open)} className='block lg:hidden'/>
+          <RxHamburgerMenu onClick={() => setOpen(!open)} className='block lg:hidden' />
         </div>
         {
           open ? (<>
-                  <div className=' flex-col   items-center space-y-4  md:space-x-10 mt-4 '>
-          <div className='list-none flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-3 mt-4 md:mt-0'>
-            <li className='cursor-pointer'>Home</li>
-            <li className='cursor-pointer'>Service</li>
-            <li className='cursor-pointer'>Doctors</li>
-            <li className='flex items-center cursor-pointer'>About Us <IoIosArrowDown className='text-xl'/></li>
-          </div>
-          <div className='bg-white text-black px-4 py-2 rounded-lg cursor-pointer'>
-            Login / Signup
-          </div>
-          <RxCross1 className='block lg:hidden'/>
-        </div>
+            <div className=' flex-col   items-center space-y-4  md:space-x-10 mt-4 '>
+              <div className='list-none flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-3 mt-4 md:mt-0'>
+                <Link to="/"> <li className='cursor-pointer'>Home</li></Link>
+                <Link to=""><li className='cursor-pointer'>Service</li></Link>
+                <Link to="/doctors" ><li className='cursor-pointer'>Doctors</li></Link>
+                <Link to="/about"><li className='flex items-center cursor-pointer'>About Us <IoIosArrowDown className='text-xl' /></li></Link>
+              </div>
+             <Link to="/login"> <div className='bg-white text-black px-4 py-2 rounded-lg cursor-pointer'>
+                Login / Signup
+              </div></Link>
+              <RxCross1 className='block lg:hidden' />
+            </div>
           </>) : (<>
-          
+
           </>)
         }
 
@@ -42,14 +44,15 @@ function NavBar() {
             <input placeholder='Search Doctor' className='focus:outline-none text-black w-full' />
           </div>
           <div className='list-none flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-3 mt-4 md:mt-0'>
-            <li className='cursor-pointer'>Home</li>
-            <li className='cursor-pointer'>Service</li>
-            <li className='cursor-pointer'>Doctors</li>
-            <li className='flex items-center cursor-pointer'>About Us <IoIosArrowDown className='text-xl'/></li>
+            <Link to="/"> <li className='cursor-pointer'>Home</li></Link>
+            <Link to=""><li className='cursor-pointer'>Service</li></Link>
+            <Link to="/doctors" ><li className='cursor-pointer'>Doctors</li></Link>
+            <Link to="/about"><li className='flex items-center cursor-pointer'>About Us <IoIosArrowDown className='text-xl' /></li></Link>
           </div>
-          <div className='bg-white text-black px-4 py-2 rounded-lg cursor-pointer'>
+         <Link to="/login"><div className='bg-white text-black px-4 py-2 rounded-lg cursor-pointer'>
             Login / Signup
           </div>
+          </Link> 
         </div>
 
       </div>
