@@ -72,9 +72,9 @@ const AllDoctor = () => {
 
   return (
     <div>
-      <div>
+      <div className='flex items-center justify-center flex-col'>
         <p className='text-[#007569] text-3xl font-semibold'>Our Doctors</p>
-        <p className='text-[#007569] text-xl'>
+        <p className='text-[#007569] md:text-xl text-center'>
           Great doctor if you need your family member to get effective immediate <br />
           assistance, emergency treatment or a simple consultation
         </p>
