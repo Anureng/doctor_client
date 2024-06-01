@@ -10,9 +10,13 @@ import { FaRegEye } from "react-icons/fa";
 import { PiBrain } from "react-icons/pi";
 import DoctorCard from '../components/DoctorCard';
 import { MdOutlineAccessTimeFilled } from "react-icons/md";
-import ConcentricCircles from '../components/ConcentricCircles'
-import ConcentricCircles2 from '../components/ConcentricCircles2'
-import ConcentricCircle3 from '../components/ConcentricCircle3'
+import ConcentricCircles from '../components/ConcentricCircle/ConcentricCircles'
+import ConcentricCircles2 from '../components/ConcentricCircle/ConcentricCircles2'
+import ConcentricCircle3 from '../components/ConcentricCircle/ConcentricCircle3'
+import CustomerFeedback from '../components/CustomerFeedback';
+import ConcentricCircle4 from '../components/ConcentricCircle/ConcentricCircle4';
+import ConcentricCircle5 from '../components/ConcentricCircle/ConcentricCircle5';
+import ConcentricCircle6 from '../components/ConcentricCircle/ConcentricCircle6';
 
 function LandingPage() {
 
@@ -88,8 +92,8 @@ function LandingPage() {
         </section>
         {/* steps div */}
 
-        <div className='mt-[150px]  mb-[100px] flex flex-col md:flex-row gap-5 justify-between'>
-          <div className='md:w-[50%]  px-16 mx-auto '>
+        <div className='mt-[150px] relative z-10  mb-[100px] flex flex-col md:flex-row gap-5 justify-between'>
+          <div className='lg::w-[50%]  md:w-[60%]  px-10 md:px-2 lg:px-16 mx-auto '>
             <img className="w-full h-full  rounded-full bg-gradient-to-b from-50% from-white to-[#007569]" src='/doctor2.png' alt='doctor2' /></div>
           <div className='md:w-[50%] px-10 md:px-0 pl-6' >
             <h2 className='font-bold text-3xl pt-10 pb-5 text-[#007569]'>Experienced doctor analyse the patient giving them a proper treatment</h2>
@@ -109,7 +113,7 @@ function LandingPage() {
 
         {/* specialist field */}
 
-        <section>
+        <section className='relative z-10'>
           <div className='font-bold w-[90%] mx-auto  md:w-full text-center text-xl md:text-3xl pt-10 pb-5 text-[#276A7B]'>
             Various specialist are here you to take care of your Health
             <p className='md:text-lg text-sm  mx-auto font-light  text-black'>
@@ -121,7 +125,7 @@ function LandingPage() {
 
 
 
-          <div className='flex flex-col justify-center items-center mx-auto md:flex-row gap-10 md:gap-5 lg:gap-20'>
+          <div className='flex flex-col  justify-center items-center mx-auto md:flex-row gap-10 md:gap-5 lg:gap-20'>
             <div className='relative'>
               <img className='rounded-lg h-[200px] w-[300px]' alt='dentist' src='/dentist1.jpg' />
               <div className='absolute inset-0 bg-[#007569] opacity-50 rounded-lg'></div>
@@ -160,8 +164,8 @@ function LandingPage() {
           </div>
 
 
-          <div>
-            <div className="container mx-auto p-4">
+          <div className='h-full   z-10 relative '>
+            <div className="container   mx-auto p-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10">
                 {doctors.map((doctor, index) => (
                   <DoctorCard key={index} doctor={doctor} />
@@ -172,16 +176,37 @@ function LandingPage() {
 
         </section>
 
+
+        <section className=' relative z-10'>
+          <div className='font-bold w-[90%] pl-10 md:w-full   text-xl md:text-3xl pt-10 pb-5 text-[#276A7B]'>
+            Customer Feedback
+            <p className='md:text-lg text-sm  font-light  text-black'>
+              Our users share stories of satisfaction, Trust, and exceptional experience. Explore now!
+            </p>
+          </div>
+
+
+          <div className='relative z-10 '><CustomerFeedback /></div>
+        </section>
+
       </main>
 
 
 
 
 
-      <ConcentricCircles2 className="relative    z-[-1]" />
+      
 
-      {/* <ConcentricCircle3 className="relative  z-[-1]" /> */}
 
+<div  className="overflow-hidden  z-[-1] overflow-x-hidden">
+<ConcentricCircles2 className="relative  " />
+<ConcentricCircle3/>
+<ConcentricCircle4/>
+<ConcentricCircle5/>
+<ConcentricCircle6/>
+
+</div>
+    
       <Footer className="absolute" />
     </>
   )

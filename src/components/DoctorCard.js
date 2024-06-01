@@ -2,7 +2,7 @@ import React from 'react';
 
 const DoctorCard = ({ doctor }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden flex">
+    <div className="bg-white rounded-lg  shadow-gray-600 shadow-md border-2 border-gray-400 overflow-hidden flex">
       <img className="w-[200px] bg-[#276A7B4D] h-[220px] overflow-hidden object-cover" src={doctor.image} alt={doctor.name} />
       <div className="flex-1 p-4">
         <div className="flex flex-col justify-between">
