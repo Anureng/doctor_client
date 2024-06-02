@@ -9,6 +9,8 @@ import SignUpPage from './pages/SignUpPage';
 import LoginPage from "./pages/LoginPage"
 import DoctorsList from "./pages/DoctorsList"
 import About from './pages/About';
+import Profile from './components/Profile';
+import UserProfile from './pages/UserProfile';
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
     <Route path="/login" element={<LoginPage/>}/>
     <Route path='/doctors' element={<DoctorsList/>}/>
     <Route path='/about' element={<About/>}/>
+    <Route path='/profile' element={<UserProfile/>}/>
   
     
     
