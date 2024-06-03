@@ -13,6 +13,7 @@ import Profile from './components/Profile';
 import UserProfile from './pages/UserProfile';
 import Payment from './pages/Payment';
 import AppointmentPage from './pages/AppointmentPage';
+import PaymentSuccessFullPage from './pages/PaymentSuccessFullPage';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
     <Route path='/about' element={<About/>}/>
     <Route path='/profile' element={<UserProfile/>}/>
     <Route path='/appointment' element={<AppointmentPage/>}/>
+    <Route path='/paymentSuccessFull' element={<PaymentSuccessFullPage/>}/>
     <Route path='/payment' element={<Payment/>}/>
     </Routes>
     </BrowserRouter>
