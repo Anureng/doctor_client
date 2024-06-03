@@ -11,6 +11,7 @@ import DoctorsList from "./pages/DoctorsList"
 import About from './pages/About';
 import Profile from './components/Profile';
 import UserProfile from './pages/UserProfile';
+import AppointmentPage from './pages/AppointmentPage';
 
 function App() {
   return (
@@ -23,9 +24,7 @@ function App() {
     <Route path='/doctors' element={<DoctorsList/>}/>
     <Route path='/about' element={<About/>}/>
     <Route path='/profile' element={<UserProfile/>}/>
-  
-    
-    
+    <Route path='/appointment' element={<AppointmentPage/>}/>
     </Routes>
     </BrowserRouter>
     </div>
