@@ -11,6 +11,7 @@ import DoctorsList from "./pages/DoctorsList"
 import About from './pages/About';
 import Profile from './components/Profile';
 import UserProfile from './pages/UserProfile';
+import Payment from './pages/Payment';
 import AppointmentPage from './pages/AppointmentPage';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
     <Route path='/about' element={<About/>}/>
     <Route path='/profile' element={<UserProfile/>}/>
     <Route path='/appointment' element={<AppointmentPage/>}/>
+    <Route path='/payment' element={<Payment/>}/>
     </Routes>
     </BrowserRouter>
     </div>
