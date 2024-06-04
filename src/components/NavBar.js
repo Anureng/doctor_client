@@ -4,10 +4,11 @@ import { IoIosArrowDown } from "react-icons/io";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from 'react-router-dom';
-
+import { FaUser } from "react-icons/fa";
 
 function NavBar() {
   const [open, setOpen] = useState(false)
+  const getdata = localStorage.getItem("token")
   return (
     <div className='text-white p-4'>
       <div className='bg-[#007569] rounded-full flex flex-col md:flex-row items-center justify-between p-4'>
@@ -49,10 +50,14 @@ function NavBar() {
             <Link to="/doctors" ><li className='cursor-pointer'>Doctors</li></Link>
             <Link to="/about"><li className='flex items-center cursor-pointer'>About Us <IoIosArrowDown className='text-xl' /></li></Link>
           </div>
-         <Link to="/login"><div className='bg-white text-black px-4 py-2 rounded-lg cursor-pointer'>
+          {
+            getdata ? (<FaUser/>) : (<>
+               <Link to="/login"><div className='bg-white text-black px-4 py-2 rounded-lg cursor-pointer'>
             Login / Signup
           </div>
           </Link> 
+            </>)
+          }
         </div>
 
       </div>

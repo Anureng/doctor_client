@@ -1,6 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const SignUpData = () => {
+
+  const [email , setEmail] = useState("")
+  const [password , setPassword] = useState("")
+  const [username , setUsername] = useState("")
+
+  const handleRegister = async(e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        "https://doctors-backend-ztcl.onrender.com/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password , username}),
+        }
+      );
+
+      if (response.ok) {
+        alert("Successfull Register")
+      } else {
+        alert("something went wrong...please check credential");
+      }
+      console.log(response);
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+  };
   return (
     <div className='flex flex-col lg:flex-row items-center justify-center space-y-10 lg:space-y-0 lg:space-x-20 p-4 min-h-screen '>
 
@@ -15,6 +44,8 @@ const SignUpData = () => {
           <input 
             id='first-name'
             type='text' 
+            value={username}
+            onChange={(e)=>setUsername(e.target.value)}
             placeholder='Enter Your First Name'
             className='w-full px-3 py-2 border rounded'
           />
@@ -35,6 +66,8 @@ const SignUpData = () => {
           <input 
             id='email'
             type='email' 
+            value={email}
+            onChange={(e)=>setEmail(e.target.value)}
             placeholder='Enter Email'
             className='w-full px-3 py-2 border rounded'
           />
@@ -45,6 +78,8 @@ const SignUpData = () => {
           <input 
             id='password'
             type='password' 
+            value={password}
+            onChange={(e)=>setPassword(e.target.value)}
             placeholder='Enter Password'
             className='w-full px-3 py-2 border rounded'
           />
@@ -84,7 +119,7 @@ const SignUpData = () => {
           </div>
         </div>
 
-        <button className='w-full bg-[#007569] text-white py-2 rounded '>
+        <button onClick={handleRegister} className='w-full bg-[#007569] text-white py-2 rounded '>
           Signup
         </button>
 
