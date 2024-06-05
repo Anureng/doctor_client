@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const SignUpData = () => {
-
+  const navigate = useNavigate();
   const [email , setEmail] = useState("")
   const [password , setPassword] = useState("")
-  const [username , setUsername] = useState("")
+  const [rpassword , setrPassword] = useState("")
+  const [location , setlocation] = useState("")
+  const [startas , setstartas] = useState("")
+  const [firstname , setfirstname] = useState("")
+  const [lastname , setlastname] = useState("")
 
   const handleRegister = async(e) => {
     e.preventDefault();
+    if(password!=rpassword){
+      alert("password and retype password is not matching")
+    }
     try {
       const response = await fetch(
         "https://doctors-backend-ztcl.onrender.com/auth/register",
@@ -16,12 +24,13 @@ const SignUpData = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password , username}),
+          body: JSON.stringify({ email, password ,location,firstname,lastname,startas}),
         }
       );
 
       if (response.ok) {
         alert("Successfull Register")
+navigate('/login')
       } else {
         alert("something went wrong...please check credential");
       }
@@ -44,8 +53,8 @@ const SignUpData = () => {
           <input 
             id='first-name'
             type='text' 
-            value={username}
-            onChange={(e)=>setUsername(e.target.value)}
+            value={firstname}
+            onChange={(e)=>setfirstname(e.target.value)}
             placeholder='Enter Your First Name'
             className='w-full px-3 py-2 border rounded'
           />
@@ -56,6 +65,8 @@ const SignUpData = () => {
           <input 
             id='last-name'
             type='text' 
+            value={lastname}
+            onChange={(e)=>setlastname(e.target.value)}
             placeholder='Enter Last Name'
             className='w-full px-3 py-2 border rounded'
           />
@@ -90,6 +101,8 @@ const SignUpData = () => {
           <input 
             id='retype-password'
             type='password' 
+            value={rpassword}
+            onChange={(e)=>setrPassword(e.target.value)}
             placeholder='ReType Password'
             className='w-full px-3 py-2 border rounded'
           />
@@ -101,6 +114,8 @@ const SignUpData = () => {
             id='location'
             type='text' 
             placeholder='Enter Location'
+            value={location}
+            onChange={(e)=>setlocation(e.target.value)}
             className='w-full px-3 py-2 border rounded'
           />
         </div>
@@ -109,11 +124,28 @@ const SignUpData = () => {
           <p className='mr-4'>Start as:</p>
           <div className='flex space-x-6'>
             <div className='flex items-center'>
-              <input type="radio" id="patient" name="role" value="patient" className='mr-2' />
+              <input type="radio" id="patient" name="role" value="patient" className='mr-2' 
+              onChange={(e)=>{
+                if(e.target.checked){
+                  setstartas("patient")
+                }
+                else{
+                  setstartas("doctor")
+                }
+              }}
+              />
               <label htmlFor="patient">Patient</label>
             </div>
             <div className='flex items-center'>
-              <input type="radio" id="doctor" name="role" value="doctor" className='mr-2' />
+              <input type="radio" id="doctor" name="role" value="doctor" className='mr-2' onChange={(e)=>{
+                if(e.target.checked){
+                  setstartas("doctor")
+                }
+                else{
+                  setstartas("patient")
+                 
+                }
+              }}/>
               <label htmlFor="doctor">Doctor</label>
             </div>
           </div>

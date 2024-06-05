@@ -77,9 +77,9 @@ const LoginData = () => {
         <button onClick={handleLogin} className='w-full bg-[#007569] text-white py-2 rounded '>
           Login
         </button>
-        <p className='mt-2 flex items-center justify-center'>OR</p>
+        {/* <p className='mt-2 flex items-center justify-center'>OR</p>
 
-        <p className='flex items-center justify-center space-x-10 text-3xl'><FcGoogle/><BiLogoFacebookCircle/></p>
+        <p className='flex items-center justify-center space-x-10 text-3xl'><FcGoogle/><BiLogoFacebookCircle/></p> */}
     <div className='mt-2 flex items-center justify-center space-x-2'>
       <p>
       Don't Have an Accout ? 
