@@ -14,7 +14,9 @@ function NavBar() {
       <div className='bg-[#007569] rounded-full flex flex-col md:flex-row items-center justify-between p-4'>
 
         <div className='font-bold lg:text-2xl'>
+          <Link to="/">
           Doctor +
+          </Link>
         </div>
 
         <div>
@@ -25,14 +27,16 @@ function NavBar() {
             <div className=' flex-col   items-center space-y-4  md:space-x-10 mt-4 '>
               <div className='list-none flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-3 mt-4 md:mt-0'>
                 <Link to="/"> <li className='cursor-pointer'>Home</li></Link>
-                <Link to=""><li className='cursor-pointer'>Service</li></Link>
+                <Link to="/"><li className='cursor-pointer'>Service</li></Link>
                 <Link to="/doctors" ><li className='cursor-pointer'>Doctors</li></Link>
                 <Link to="/about"><li className='flex items-center cursor-pointer'>About Us <IoIosArrowDown className='text-xl' /></li></Link>
               </div>
              <Link to="/login"> <div className='bg-white text-black px-4 py-2 rounded-lg cursor-pointer'>
                 Login / Signup
               </div></Link>
+              <Link>
               <RxCross1 className='block lg:hidden' />
+              </Link>
             </div>
           </>) : (<>
 
