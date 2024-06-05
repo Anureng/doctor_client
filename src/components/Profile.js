@@ -98,7 +98,7 @@ const Profile = () => {
     if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
       try {
         const id = localStorage.getItem("userId");
-        const response = await fetch(`https://doctors-backend-ztcl.onrender.com/deleteaccount/${id}`, {
+        const response = await fetch(`https://doctors-backend-ztcl.onrender.com/deleteuser/${id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -327,7 +327,7 @@ const Profile = () => {
               Save Changes
             </button>
 
-            <h2 className='block font-semibold text-2xl'>Change Password</h2>
+            {/* <h2 className='block font-semibold text-2xl'>Change Password</h2>
 
             <div className='mb-4'>
               <label className='block text-gray-700 w-fit mb-2' htmlFor='new-password'>New Password</label>
@@ -340,9 +340,9 @@ const Profile = () => {
                 className='w-full px-3 py-2 border rounded'
                 autoComplete='new-password'
               />
-            </div>
+            </div> */}
 
-            <div className='mb-4'>
+            {/* <div className='mb-4'>
               <label className='block text-gray-700 w-fit mb-2' htmlFor='retype-new-password'>Re-Enter New Password</label>
               <input
                 id='retype-new-password'
@@ -352,9 +352,9 @@ const Profile = () => {
                 placeholder='Re-Enter New Password'
                 className='w-full px-3 py-2 border rounded'
               />
-            </div>
+            </div> */}
 
-            <div className='flex space-x-4'>
+            {/* <div className='flex space-x-4'>
 
               <button
                 className='bg-[#276A7B] text-white px-2 py-1 rounded'
@@ -368,7 +368,7 @@ const Profile = () => {
               >
                 Cancel
               </button>
-            </div>
+            </div> */}
 
 
 
