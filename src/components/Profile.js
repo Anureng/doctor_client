@@ -561,7 +561,7 @@ const Profile = () => {
   const [email, setEmail] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [Phoneno, setPhoneno] = useState("");
+  const [Phoneno, setPhoneno] = useState(0);
   const [address, setAddress] = useState("");
   const [dob, setDob] = useState("");
   const [bloodgroup, setBloodgroup] = useState("");
@@ -585,6 +585,7 @@ const Profile = () => {
 
       if (response.ok) {
         alert("Personal Information Updated");
+        fetchData();
         setIsDialogOpen(false)
       } else {
         alert("Something went wrong...please check credentials");
@@ -594,32 +595,32 @@ const Profile = () => {
     }
   }
 
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault();
-    if (newPassword !== retypeNewPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-    try {
-      const id = localStorage.getItem("userId");
-      const response = await fetch(`https://doctors-backend-ztcl.onrender.com/updatepassword/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ password: newPassword }),
-      });
+  // const handlePasswordSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (newPassword !== retypeNewPassword) {
+  //     alert("Passwords do not match!");
+  //     return;
+  //   }
+  //   try {
+  //     const id = localStorage.getItem("userId");
+  //     const response = await fetch(`https://doctors-backend-ztcl.onrender.com/updatepassword/${id}`, {
+  //       method: "PATCH",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ password: newPassword }),
+  //     });
 
-      if (response.ok) {
-        alert("Password Updated");
-        setIsDialogOpen(false)
-      } else {
-        alert("Something went wrong...please try again later");
-      }
-    } catch (error) {
-      console.error("Error during password update:", error);
-    }
-  }
+  //     if (response.ok) {
+  //       alert("Password Updated");
+  //       setIsDialogOpen(false)
+  //     } else {
+  //       alert("Something went wrong...please try again later");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during password update:", error);
+  //   }
+  // }
 
   const fetchData = async () => {
     try {
@@ -737,7 +738,7 @@ const Profile = () => {
                 <label className='block font-semibold'>Phone No</label>
                 <input
                 placeholder='Phone No'
-                  type='text'
+                  type='Number'
                   name='phone number'
                   value={Phoneno}
                   onChange={(e) => setPhoneno(e.target.value)}
@@ -824,7 +825,7 @@ const Profile = () => {
               Save Changes
             </button>
 
-            <h2 className='block font-semibold text-2xl'>Change Password</h2>
+            {/* <h2 className='block font-semibold text-2xl'>Change Password</h2>
 
             <div className='mb-4'>
               <label className='block text-gray-700 w-fit mb-2' htmlFor='new-password'>New Password</label>
@@ -837,9 +838,9 @@ const Profile = () => {
                 className='w-full px-3 py-2 border rounded'
                 autoComplete='new-password'
               />
-            </div>
+            </div> */}
 
-            <div className='mb-4'>
+            {/* <div className='mb-4'>
               <label className='block text-gray-700 w-fit mb-2' htmlFor='retype-new-password'>Re-Enter New Password</label>
               <input
                 id='retype-new-password'
@@ -849,9 +850,9 @@ const Profile = () => {
                 placeholder='Re-Enter New Password'
                 className='w-full px-3 py-2 border rounded'
               />
-            </div>
+            </div> */}
 
-            <div className='flex space-x-4'>
+            {/* <div className='flex space-x-4'>
 
               <button
                 className='bg-[#276A7B] text-white px-2 py-1 rounded'
@@ -865,7 +866,7 @@ const Profile = () => {
               >
                 Cancel
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       )
