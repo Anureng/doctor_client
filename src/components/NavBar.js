@@ -51,7 +51,9 @@ function NavBar() {
             <Link to="/about"><li className='flex items-center cursor-pointer'>About Us <IoIosArrowDown className='text-xl' /></li></Link>
           </div>
           {
-            getdata ? (<FaUser/>) : (<>
+            getdata ? (<Link to="/profile"><FaUser/></Link>
+            
+            ) : (<>
                <Link to="/login"><div className='bg-white text-black px-4 py-2 rounded-lg cursor-pointer'>
             Login / Signup
           </div>
