@@ -2,9 +2,44 @@ import React, { useState } from 'react'
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 const CreateAppointment = () => {
-  const [value, onChange] = useState(new Date());
+  const [date, onChange] = useState(new Date());
+  const[name,setName] = useState("")
+  const[Currentproblem,setCurrentproblem] = useState("")
+  const[email,setEmail] = useState("")
+  const[mob,setMob] = useState("")
+  const[time,setTime] = useState("")
 
-  const date = ["11:00 AM" ,"12:00 PM","01:30 PM","03:00 PM","04:00 PM","05:00 PM","07:30 PM" ]
+  console.log(time);
+
+  const datee = ["11:00 AM" ,"12:00 PM","01:30 PM","03:00 PM","04:00 PM","05:00 PM","07:30 PM" ]
+
+  const handleAppointment = async() =>{
+    try {
+      const doct = "Allen"
+      const type = "Allen"
+      const fee = "500"
+      const userid =  localStorage.getItem("userId");
+      const response = await fetch(
+        "https://doctors-backend-ztcl.onrender.com/book",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userid,name ,mob ,time , date , email , doct , Currentproblem,type,fee}),
+        }
+      );
+
+      if (response.ok) {
+        alert("Successfull Register")
+      } else {
+        alert("something went wrong...please check credential");
+      }
+      console.log(response);
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+  }
   return (
     <div className='flex  justify-evenly p-4 flex-col lg:flex-row space-y-3 lg:space-y-0'>
       <div className='border lg:w-2/5 bg-[#F6F9FF] rounded-xl space-y-3'>
@@ -17,24 +52,24 @@ const CreateAppointment = () => {
             <div className=' flex flex-col md:flex-row items-center justify-between'>
             <div className='flex space-y-2 flex-col'>
             <label className=' font-light'>Patient Name</label>
-            <input type='text' className='px-2 py-1 rounded-lg focus:outline-none' placeholder='Patient Name'/>
+            <input type='text' className='px-2 py-1 rounded-lg focus:outline-none' value={name} onChange={(e)=>setName(e.target.value)} placeholder='Patient Name'/>
             </div>
              
             <div className='flex space-y-2 flex-col'>
             <label className=' font-light'>Disease</label>
-            <input type='text' className='px-2 py-1 rounded-lg focus:outline-none' placeholder='Patient Name'/>
+            <input type='text' value={Currentproblem} onChange={(e)=>setCurrentproblem(e.target.value)} className='px-2 py-1 rounded-lg focus:outline-none' placeholder='Patient Name'/>
             </div>
             </div>
 
             <div className=' flex flex-col md:flex-row items-center justify-between'>
             <div className='flex space-y-2 flex-col'>
             <label className=' font-light'>Your Email</label>
-            <input type='email' className='px-2 py-1 rounded-lg focus:outline-none' placeholder='Patient Name'/>
+            <input type='email' value={email} onChange={(e)=>setEmail(e.target.value)} className='px-2 py-1 rounded-lg focus:outline-none' placeholder='Your Email'/>
             </div>
              
             <div className='flex space-y-2 flex-col'>
             <label className=' font-light'>Your Phone</label>
-            <input type='text' className='px-2 py-1 rounded-lg focus:outline-none' placeholder='Patient Name'/>
+            <input type='text' className='px-2 py-1 rounded-lg focus:outline-none' value={mob} onChange={(e)=>setMob(e.target.value)} placeholder='Your Phone'/>
             </div>
             </div>
 
@@ -66,12 +101,12 @@ const CreateAppointment = () => {
         </div>
 
         <div className='flex flex-col md:flex-row space-x-4 lg:space-y-3 mt-4'  >
-        <Calendar className="" onChange={onChange} value={value} />
+        <Calendar className="" onChange={onChange} value={date} />
         <div className='bg-white md:w-fit h-fit  p-4 space-y-3 rounded-lg'>
           {
-            date.map((el)=>(
+            datee.map((el)=>(
               <div className='space-x-3'>
-              <button className='bg-[#EFEFEF] px-2 py-1 rounded-lg  '>{el}</button>
+              <button onClick={()=>setTime(el)} className='bg-[#EFEFEF] px-2 py-1 rounded-lg  '>{el}</button>
               </div>
             ))
           }
@@ -80,7 +115,7 @@ const CreateAppointment = () => {
       </div>
 
       <div className='flex items-center justify-center px-2 py-1 text-white rounded-lg'>
-        <button className='bg-[#007569] px-2 py-1 text-white rounded-lg'>Book Now</button>
+        <button className='bg-[#007569] px-2 py-1 text-white rounded-lg' onClick={handleAppointment}>Book Now</button>
       </div>
       </div>
 
