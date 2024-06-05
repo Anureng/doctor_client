@@ -8,7 +8,56 @@ function PaymentContent() {
         setSelectedPayment(e.target.value);
     };
 
-    const renderPaymentForm = () => {
+    const key1 = process.env.REACT_APP_API_KEY
+
+ 
+
+
+    const loadScript = (src) => {
+        return new Promise( (resovle) => {
+        const script = document. createElement('script');
+        script.src = src;
+        script.onload = () => {
+        resovle(true)
+        }
+        script.onerror = () => {
+        resovle (false)
+        }
+        document.body.appendChild(script)
+        });
+    }
+    const razorPay = async (amount) =>{
+        //const res = await loadScript("https://pmny.in/yrz5HA0GJgxs")
+        const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+         if (!res) {
+            alert('You are offline... Failed to load Razorpay SDK');
+            return;
+         }
+        
+         const options = {
+            key:key1,
+            currency:"INR",
+            amount:100,
+            name: "E-Cart", 
+            description: "Ordering 1 thumbnail", 
+            image: 'xyz',
+  
+            handler: function (response) {
+            alert ("Payment Successfully");
+            // placeorder(false);
+            // alert ("payment id: " + response.razorpay_payment_id)
+            }, 
+            prefill: {
+            name:
+            "E-Cart"
+            }
+            };
+  
+            const paymentObject = new window.Razorpay(options);
+            paymentObject.open()
+     }
+
+     const renderPaymentForm = () => {
         switch (selectedPayment) {
             case 'card':
                 return (
@@ -55,7 +104,7 @@ function PaymentContent() {
                         <p className='text-gray-700'>You will be redirected to PayPal to complete your payment.</p>
                         <div className='mt-6 flex justify-end gap-4 space-x-4'>
                       <button className='px-4 py-1 border-[2px] border-[#007569] text-xl  rounded-md text-[#007569]'>Cancel</button>
-                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md'>Next</button>
+                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md' onClick={(e)=>razorPay(500)}>Next</button>
                     </div>
                     </div>
                 );
