@@ -14,7 +14,7 @@ function NavBar() {
       <div className={`rounded-full flex flex-col md:flex-row items-center justify-between p-4 ${open ? 'bg-white text-black' : 'bg-[#007569] text-white'}`}>
 
 
-      <div className={`flex space-x-10 ${open ? "bg-[#007569] w-full p-2 rounded-lg text-white" :""}`}>
+      <div className={`flex space-x-8 ${open ? "bg-[#007569] w-full p-2 rounded-lg text-white" :""}`}>
         <div className='font-bold lg:text-2xl'>
           <Link to="/" className={open ? 'text-white ' : 'text-white '}>Doctor +</Link>
         </div>
@@ -24,14 +24,14 @@ function NavBar() {
         </div>
       </div>
 
-        <div className={`lg:flex space-x-10  ${open ? 'flex ' : 'hidden'} flex-col lg:flex-row items-center w-full lg:w-auto`}>
+        <div className={`lg:flex space-x-8   ${open ? 'flex ' : 'hidden'} flex-col lg:flex-row items-center w-full lg:w-auto`}>
           <div className={`flex items-center space-x-1 rounded-lg w-full lg:w-96 p-2 mt-4 lg:mt-0 ${open ? 'bg-[#007569] text-white' : 'bg-white'}`}>
             <CiSearch className={open ? 'text-white' : 'text-black'} />
-            <input placeholder='Search Doctor' className={`focus:outline-none w-full ${open ? 'text-white placeholder-white' : 'text-black placeholder-black'}`} />
+            <input placeholder='Search Doctor' className={`focus:outline-none w-96 ${open ? 'text-white placeholder-white' : 'text-black placeholder-black'}`} />
           </div>
 
           <div className='list-none  w-full   flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-3 mt-4 lg:mt-0'>
-            <Link to="/" className=' border'><li className={`cursor-pointer  flex items-center justify-center ${open ? 'bg-[#007569]  text-white p-2 rounded-md' : ''}`}>Home</li></Link>
+            <Link to="/" className=' '><li className={`cursor-pointer  flex items-center justify-center ${open ? 'bg-[#007569]  text-white p-2 rounded-md' : ''}`}>Home</li></Link>
             <Link to="/"><li className={`cursor-pointer  flex items-center justify-center ${open ? 'bg-[#007569]  text-white p-2 rounded-md' : ''}`}>Service</li></Link>
             <Link to="/doctors"><li className={`cursor-pointer  flex items-center justify-center ${open ? 'bg-[#007569]  text-white p-2 rounded-md' : ''}`}>Doctors</li></Link>
             <Link to="/about"><li className={`cursor-pointer  flex items-center justify-center ${open ? 'bg-[#007569] text-white p-2 rounded-md' : ''}`}>About Us <IoIosArrowDown className='text-xl' /></li></Link>
