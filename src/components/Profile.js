@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Appointment from './Appointment';
 import SaveDoctor from './SaveDoctor';
+import {storage} from "../firebase.config";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
 
 const Profile = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -16,8 +18,27 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [retypeNewPassword, setRetypeNewPassword] = useState("");
   const [location, setLocation] = useState("");
-  const [profilepic, setProfilepic] = useState()
+  const [profilepic, setprofilepic] = useState("")
 
+
+  const uploadimage = async(e) =>{
+    const id = localStorage.getItem("userId");
+    const imageRef1 = ref(storage,id);
+    if (e) {
+        uploadBytes(imageRef1, e).then(() => {
+            getDownloadURL(imageRef1).then((url) => {
+                setprofilepic(url);
+                alert("uploaded")
+            }).catch((error) => {
+                console.log(error.message, "error geting the image url");
+            })
+        }).catch((error) => {
+            console.log(error.message);
+        })
+    }
+  }
+
+  
   const handlePersonalInfoSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -27,7 +48,7 @@ const Profile = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ firstname, email, lastname, location, Phoneno, address, dob, bloodgroup, password: newPassword, profilepic }),
+        body: JSON.stringify({ firstname, email, lastname, location, Phoneno, address, dob, bloodgroup, profilepic }),
       });
 
       if (response.ok) {
@@ -42,32 +63,32 @@ const Profile = () => {
     }
   }
 
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault();
-    if (newPassword !== retypeNewPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-    try {
-      const id = localStorage.getItem("userId");
-      const response = await fetch(`https://doctors-backend-ztcl.onrender.com/updatepassword/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ password: newPassword }),
-      });
+  // const handlePasswordSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (newPassword !== retypeNewPassword) {
+  //     alert("Passwords do not match!");
+  //     return;
+  //   }
+  //   try {
+  //     const id = localStorage.getItem("userId");
+  //     const response = await fetch(`https://doctors-backend-ztcl.onrender.com/updatepassword/${id}`, {
+  //       method: "PATCH",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ password: newPassword }),
+  //     });
 
-      if (response.ok) {
-        alert("Password Updated");
-        setIsDialogOpen(false)
-      } else {
-        alert("Something went wrong...please try again later");
-      }
-    } catch (error) {
-      console.error("Error during password update:", error);
-    }
-  }
+  //     if (response.ok) {
+  //       alert("Password Updated");
+  //       setIsDialogOpen(false)
+  //     } else {
+  //       alert("Something went wrong...please try again later");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during password update:", error);
+  //   }
+  // }
 
   const fetchData = async () => {
     try {
@@ -119,10 +140,7 @@ const Profile = () => {
   }
 
 
-  const handleProfilePicChange = (e) => {
-    const file = e.target.files[0]; // Get the first file from the input
-    setProfilepic(file); // Set the file as the profile picture
-  }
+ 
 
   useEffect(() => {
     fetchData();
@@ -303,7 +321,13 @@ const Profile = () => {
                   placeholder='Drop file here to upload'
                   type='file'
                   name='photo'
-                  onChange={handleProfilePicChange}
+                  onChange={
+                    (e) => {
+                        if (e.target.files[0]) {
+                            uploadimage(e.target.files[0])
+                        }
+                    }
+                  }
                   className='hidden'
                   id='fileInput'
                 />
