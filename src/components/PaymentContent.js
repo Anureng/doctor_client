@@ -8,7 +8,7 @@ function PaymentContent() {
         setSelectedPayment(e.target.value);
     };
 
-    const key1 = process.env.REACT_APP_API_KEY
+    const key1 = "rzp_test_dTl39yx1h7zSnl"
 
  
 
@@ -38,7 +38,7 @@ function PaymentContent() {
             key:key1,
             currency:"INR",
             amount:100,
-            name: "E-Cart", 
+            name: "Doctor", 
             description: "Ordering 1 thumbnail", 
             image: 'xyz',
   
@@ -49,7 +49,7 @@ function PaymentContent() {
             }, 
             prefill: {
             name:
-            "E-Cart"
+            "Doctor"
             }
             };
   
@@ -92,7 +92,7 @@ function PaymentContent() {
                     </div>
                     <div className='mt-6 flex justify-end gap-4 space-x-4'>
                       <button className='px-4 py-1 border-[2px] border-[#007569] text-xl  rounded-md text-[#007569]'>Cancel</button>
-                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md'>Next</button>
+                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md' onClick={(e)=>razorPay(500)}>Next</button>
                     </div>
                   </div>
                   
@@ -115,8 +115,8 @@ function PaymentContent() {
                         <p className='text-gray-700'>You will receive instructions on how to complete the prepayment.</p>
                         <div className='mt-6 flex justify-end gap-4 space-x-4'>
                       <button className='px-4 py-1 border-[2px] border-[#007569] text-xl  rounded-md text-[#007569]'>Cancel</button>
-                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md'>Next</button>
-                    </div>
+                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md' onClick={(e)=>razorPay(500)}>Next</button>
+                    </div> 
                     </div>
                 );
             default:

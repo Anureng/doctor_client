@@ -9,6 +9,7 @@ import { IoClipboardOutline } from "react-icons/io5";
 import { GrLocation } from "react-icons/gr";
 import FeedbackModal from './FeedbackPopUp';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function AboutDoctor() {
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
@@ -76,7 +77,11 @@ function AboutDoctor() {
                         >
                             Add Feedback
                         </button>
-                        <button className='border-[2px] border-[#276A7B] rounded-lg p-1 bg-[#276a7b] text-white  w-[140px] '>Book Appointment</button>
+                        <button className='border-[2px] border-[#276A7B] rounded-lg p-1 bg-[#276a7b] text-white  w-[140px] '>
+                            <Link to="/appointment">
+                            Book Appointment
+                            </Link>
+                            </button>
                     </div>
                 </div>
                 {showFeedbackModal && (
