@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUpData = () => {
   const navigate = useNavigate();
@@ -157,7 +157,11 @@ navigate('/login')
 
         <div className='mt-2 flex items-center justify-center space-x-2'>
           <p>Already have an account?</p>
-          <p className='text-[#12D6FF] cursor-pointer'>Login Now</p>
+          <p className='text-[#12D6FF] cursor-pointer'>
+            <Link to="/login">
+            Login Now
+            </Link>
+            </p>
         </div>
       </div>
     </div>

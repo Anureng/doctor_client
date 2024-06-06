@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
+import { useNavigate } from 'react-router-dom';
 const CreateAppointment = () => {
   const [date, onChange] = useState(new Date());
   const[name,setName] = useState("")
@@ -8,8 +9,7 @@ const CreateAppointment = () => {
   const[email,setEmail] = useState("")
   const[mob,setMob] = useState("")
   const[time,setTime] = useState("")
-
-  console.log(time);
+  const navigate = useNavigate()
 
   const datee = ["11:00 AM" ,"12:00 PM","01:30 PM","03:00 PM","04:00 PM","05:00 PM","07:30 PM" ]
 
@@ -31,7 +31,7 @@ const CreateAppointment = () => {
       );
 
       if (response.ok) {
-        alert("Successfull Register")
+        navigate('/payment')
       } else {
         alert("something went wrong...please check credential");
       }

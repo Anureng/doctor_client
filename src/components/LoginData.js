@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { BiLogoFacebookCircle } from "react-icons/bi";
 import { useAuth } from '../AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const LoginData = () => {
   const {login, setUser } = useAuth();
   const [email, setEmail] = useState("");
@@ -84,7 +84,11 @@ const LoginData = () => {
       <p>
       Don't Have an Accout ? 
       </p>
-      <p className='text-[#12D6FF]'>Register</p>
+      <p className='text-[#12D6FF]'>
+        <Link to="/signup">
+        Register
+        </Link>
+        </p>
     
     </div>
       </div>
