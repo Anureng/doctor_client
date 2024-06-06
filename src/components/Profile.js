@@ -12,6 +12,7 @@ const Profile = () => {
   const [Phoneno, setPhoneno] = useState("");
   const [address, setAddress] = useState("");
   const [dob, setDob] = useState("");
+  const [gender, setgender] = useState("");
   const [bloodgroup, setBloodgroup] = useState("");
   const [profiledata, setProfiledata] = useState([]);
   const [password, setPassword] = useState("");
@@ -48,7 +49,7 @@ const Profile = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ firstname, email, lastname, location, Phoneno, address, dob, bloodgroup, profilepic }),
+        body: JSON.stringify({ firstname, email,gender, lastname, location, Phoneno, address, dob, bloodgroup, profilepic }),
       });
 
       if (response.ok) {
@@ -244,6 +245,23 @@ const Profile = () => {
             </div>
 
             <div className='flex flex-row  gap-4 justify-between'>
+            <div className='w-full'>
+                <label className='block font-semibold' htmlFor='gender'>Gender</label>
+                <select
+                  id='gender'
+                  type='text'
+                  placeholder='Enter gender'
+                  value={gender}
+                  onChange={(e) => setgender(e.target.value)}
+                  className='w-full px-3 py-2 border rounded'
+                >
+                  <option value=''>Select gender</option>
+                  <option value='Male'>Male</option>
+                  <option value='Female'>Female</option>
+                </select>
+              </div>
+              </div>
+            <div className='flex flex-row  gap-4 justify-between'>
               <div className=' w-full'>
                 <label className='block font-semibold'>DOB</label>
                 <input
@@ -276,6 +294,9 @@ const Profile = () => {
                 </select>
               </div>
             </div>
+
+            
+            
 
 
             <div className='flex flex-row  gap-4 justify-between'>
