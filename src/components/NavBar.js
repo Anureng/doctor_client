@@ -43,7 +43,7 @@ function NavBar() {
             </Link>
           ) : (
             <Link to="/login" className='mt-4 lg:mt-0'>
-              <div className={`px-4 py-2 rounded-lg cursor-pointer ${open ? 'bg-[#007569] text-white' : 'bg-white text-black'}`}>
+              <div className={` px-1 py-2 w-32 rounded-lg cursor-pointer ${open ? 'bg-[#007569] text-white' : 'bg-white text-black'}`}>
                 Login / Signup
               </div>
             </Link>
