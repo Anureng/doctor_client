@@ -3,6 +3,8 @@ import Appointment from './Appointment';
 import SaveDoctor from './SaveDoctor';
 import {storage} from "../firebase.config";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
+import { useAuth } from '../AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -16,10 +18,12 @@ const Profile = () => {
   const [bloodgroup, setBloodgroup] = useState("");
   const [profiledata, setProfiledata] = useState([]);
   const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const [newpassword, setNewPassword] = useState("");
   const [retypeNewPassword, setRetypeNewPassword] = useState("");
   const [location, setLocation] = useState("");
   const [profilepic, setprofilepic] = useState("")
+  const {logout} = useAuth();
+  const nav=useNavigate();
 
 
   const uploadimage = async(e) =>{
@@ -64,32 +68,31 @@ const Profile = () => {
     }
   }
 
-  // const handlePasswordSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (newPassword !== retypeNewPassword) {
-  //     alert("Passwords do not match!");
-  //     return;
-  //   }
-  //   try {
-  //     const id = localStorage.getItem("userId");
-  //     const response = await fetch(`https://doctors-backend-ztcl.onrender.com/updatepassword/${id}`, {
-  //       method: "PATCH",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ password: newPassword }),
-  //     });
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    if (newpassword !== retypeNewPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+    try {
+      const response = await fetch(`https://doctors-backend-ztcl.onrender.com/auth/updatepassword`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({email,newpassword}),
+      });
 
-  //     if (response.ok) {
-  //       alert("Password Updated");
-  //       setIsDialogOpen(false)
-  //     } else {
-  //       alert("Something went wrong...please try again later");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during password update:", error);
-  //   }
-  // }
+      if (response.ok) {
+        alert("Password Updated");
+        setIsDialogOpen(false)
+      } else {
+        alert("Something went wrong...please try again later");
+      }
+    } catch (error) {
+      console.error("Error during password update:", error);
+    }
+  }
 
   const fetchData = async () => {
     try {
@@ -178,12 +181,21 @@ const Profile = () => {
               <p className='font-light'>{profile.bloodgroup}</p>
             </div>
           </div>
-          <div className='flex items-center justify-center'>
+          <div className='flex flex-col items-center justify-center gap-6'>
             <button
               className='bg-[#276A7B] text-white px-2 py-1 rounded-lg'
               onClick={() => setIsDialogOpen(true)}
             >
               Update Setting
+            </button>
+            <button
+              className='bg-[#276A7B] text-white px-2 py-1 rounded-lg'
+              onClick={() =>{
+                logout()
+              nav("/")
+              }}
+            >
+              Logout
             </button>
           </div>
         </div>
@@ -372,22 +384,33 @@ const Profile = () => {
               Save Changes
             </button>
 
-            {/* <h2 className='block font-semibold text-2xl'>Change Password</h2>
-
+            <h2 className='block font-semibold text-2xl'>Change Password</h2>
+            <div className='mb-4'>
+              <label className='block text-gray-700 w-fit mb-2' htmlFor='new-password'>Email</label>
+              <input
+                placeholder='E-mail'
+                type='text'
+                name='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className='border p-1 rounded w-full'
+              />
+            </div>
+          
             <div className='mb-4'>
               <label className='block text-gray-700 w-fit mb-2' htmlFor='new-password'>New Password</label>
               <input
                 id='new-password'
                 type='password'
-                value={newPassword}
+                value={newpassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder='Enter New Password'
                 className='w-full px-3 py-2 border rounded'
                 autoComplete='new-password'
               />
-            </div> */}
+            </div>
 
-            {/* <div className='mb-4'>
+            <div className='mb-4'>
               <label className='block text-gray-700 w-fit mb-2' htmlFor='retype-new-password'>Re-Enter New Password</label>
               <input
                 id='retype-new-password'
@@ -397,9 +420,9 @@ const Profile = () => {
                 placeholder='Re-Enter New Password'
                 className='w-full px-3 py-2 border rounded'
               />
-            </div> */}
+            </div>
 
-            {/* <div className='flex space-x-4'>
+            <div className='flex space-x-4'>
 
               <button
                 className='bg-[#276A7B] text-white px-2 py-1 rounded'
@@ -413,7 +436,7 @@ const Profile = () => {
               >
                 Cancel
               </button>
-            </div> */}
+            </div>
 
 
 
