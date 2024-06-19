@@ -7,6 +7,7 @@ import { IoClipboardOutline } from "react-icons/io5";
 import { GrLocation } from "react-icons/gr";
 import FeedbackModal from './FeedbackPopUp';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 
@@ -70,6 +71,7 @@ const doctors = [
 
 ];
 
+
 function AboutDoctor() {
     const { id } = useParams();
     const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -103,7 +105,7 @@ function AboutDoctor() {
     return (
 
         <>
-            <div className='w-[80%] mx-auto'>
+         <div className='w-[80%] mx-auto'>
                 <section className='lg:flex lg:flex-row  lg:mx-auto md:mx-10 grid grid-cols-1 bg-white p-4 gap-2 rounded-lg border-[1px] border-[#BABABA] mx-auto justify-between'>
                     <div className='lg:w-[25%]  p-2 mx-auto bg-white'>
                         <img className='h-[220px] w-[220px]  rounded-md overflow-hidden  bg-[#017A884D]' src={selectedDoctor.image} alt='doctor' />
@@ -152,8 +154,12 @@ function AboutDoctor() {
                                 onClick={() => openFeedbackModal(doctors)}
                             >
                                 Add Feedback
+                            </button >
+                            <button className='border-[2px] border-[#276A7B] rounded-lg p-1 bg-[#276a7b] text-white  w-[140px] '>
+                            <Link to="/appointment">
+                            Book Appointment
+                            </Link>
                             </button>
-                            <button className='border-[2px] border-[#276A7B] rounded-lg p-1 bg-[#276a7b] text-white  w-[140px] '>Book Appointment</button>
                         </div>
                     </div>
                     {showFeedbackModal && (
