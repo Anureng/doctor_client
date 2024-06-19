@@ -14,6 +14,7 @@ import UserProfile from './pages/UserProfile';
 import Payment from './pages/Payment';
 import AppointmentPage from './pages/AppointmentPage';
 import PaymentSuccessFullPage from './pages/PaymentSuccessFullPage';
+import DoctorProfile from './pages/DoctorProfile';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
     <Route path="/signup" element={<SignUpPage/>}/>
     <Route path="/login" element={<LoginPage/>}/>
     <Route path='/doctors' element={<DoctorsList/>}/>
+    <Route path='/doctors/profile/:id' element={<DoctorProfile/>}/>
     <Route path='/about' element={<About/>}/>
     <Route path='/profile' element={<UserProfile/>}/>
     <Route path='/appointment' element={<AppointmentPage/>}/>
