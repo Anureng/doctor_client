@@ -13,18 +13,17 @@ const SignUpData = () => {
 
   const handleRegister = async(e) => {
     e.preventDefault();
-    if(password!=rpassword){
+    if(password!==rpassword){
       alert("password and retype password is not matching")
     }
     try {
-      const response = await fetch(
-        "https://doctors-backend-ztcl.onrender.com/auth/register",
+      const response = await fetch("https://doctors-backend-ztcl.onrender.com/auth/register",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password ,location,firstname,lastname,startas}),
+          body: JSON.stringify({ email, password ,location,firstname,lastname,type:startas}),
         }
       );
 

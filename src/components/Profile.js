@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import {storage} from "../firebase.config";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
 import Appointment from './Appointment';
 import SaveDoctor from './SaveDoctor';
 
@@ -27,7 +29,7 @@ const Profile = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ firstname, email, lastname, location, Phoneno, address, dob, bloodgroup, password: newPassword, profilepic }),
+        body: JSON.stringify({ firstname, email, lastname, location, Phoneno, address, dob, bloodgroup, password: newPassword, profilepic:profilepic }),
       });
 
       if (response.ok) {
@@ -41,6 +43,24 @@ const Profile = () => {
       console.error("Error during update:", error);
     }
   }
+
+  const uploadimage = async(e) =>{
+    const id = localStorage.getItem("userId");
+    const imageRef1 = ref(storage,id);
+    if (e) {
+        uploadBytes(imageRef1, e).then(() => {
+            getDownloadURL(imageRef1).then((url) => {
+                setProfilepic(url);
+                alert("uploaded")
+            }).catch((error) => {
+                console.log(error.message, "error geting the image url");
+            })
+        }).catch((error) => {
+            console.log(error.message);
+        })
+    }
+  }
+
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
@@ -303,7 +323,13 @@ const Profile = () => {
                   placeholder='Drop file here to upload'
                   type='file'
                   name='photo'
-                  onChange={handleProfilePicChange}
+                  onChange={
+                    (e) => {
+                        if (e.target.files[0]) {
+                            uploadimage(e.target.files[0])
+                        }
+                    }
+                  }
                   className='hidden'
                   id='fileInput'
                 />

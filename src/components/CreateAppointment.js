@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const CreateAppointment = () => {
   const [date, onChange] = useState(new Date());
   const[name,setName] = useState("")
@@ -13,11 +14,45 @@ const CreateAppointment = () => {
 
   const datee = ["11:00 AM" ,"12:00 PM","01:30 PM","03:00 PM","04:00 PM","05:00 PM","07:30 PM" ]
 
+
+  useEffect(()=>{
+   const fetchData = async() =>{
+    // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+    const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ }),
+      }
+    );
+    const dataResponse = await data.json()
+
+    console.log(dataResponse);
+
+    const find = dataResponse.map((el)=>el._id);
+
+    
+
+    if(find.includes(localStorage.getItem("userId")))
+      {
+        console.log("found");
+      }
+      else {
+        console.log("not found");
+      }
+   }
+   fetchData()
+  },[])
+
   const handleAppointment = async() =>{
     try {
-      const doct = "Allen"
+      const doct = "66765d7accfe3f3987059f39"
       const type = "Allen"
       const fee = "500"
+      const doctorname ="Allen"
+      const payment = false
       const userid =  localStorage.getItem("userId");
       const response = await fetch(
         "https://doctors-backend-ztcl.onrender.com/book",
@@ -26,7 +61,7 @@ const CreateAppointment = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userid,name ,mob ,time , date , email , doct , Currentproblem,type,fee}),
+          body: JSON.stringify({ userid,name ,mob ,time , date , email , doct ,doctorname , Currentproblem,type,fee,payment}),
         }
       );
 
