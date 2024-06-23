@@ -3,6 +3,10 @@ import {storage} from "../firebase.config";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
 import Appointment from './Appointment';
 import SaveDoctor from './SaveDoctor';
+import {storage} from "../firebase.config";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
+import { useAuth } from '../AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -12,14 +16,36 @@ const Profile = () => {
   const [Phoneno, setPhoneno] = useState("");
   const [address, setAddress] = useState("");
   const [dob, setDob] = useState("");
+  const [gender, setgender] = useState("");
   const [bloodgroup, setBloodgroup] = useState("");
   const [profiledata, setProfiledata] = useState([]);
   const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const [newpassword, setNewPassword] = useState("");
   const [retypeNewPassword, setRetypeNewPassword] = useState("");
   const [location, setLocation] = useState("");
-  const [profilepic, setProfilepic] = useState()
+  const [profilepic, setprofilepic] = useState("")
+  const {logout} = useAuth();
+  const nav=useNavigate();
 
+
+  const uploadimage = async(e) =>{
+    const id = localStorage.getItem("userId");
+    const imageRef1 = ref(storage,id);
+    if (e) {
+        uploadBytes(imageRef1, e).then(() => {
+            getDownloadURL(imageRef1).then((url) => {
+                setprofilepic(url);
+                alert("uploaded")
+            }).catch((error) => {
+                console.log(error.message, "error geting the image url");
+            })
+        }).catch((error) => {
+            console.log(error.message);
+        })
+    }
+  }
+
+  
   const handlePersonalInfoSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -64,18 +90,17 @@ const Profile = () => {
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    if (newPassword !== retypeNewPassword) {
+    if (newpassword !== retypeNewPassword) {
       alert("Passwords do not match!");
       return;
     }
     try {
-      const id = localStorage.getItem("userId");
-      const response = await fetch(`https://doctors-backend-ztcl.onrender.com/updatepassword/${id}`, {
-        method: "PATCH",
+      const response = await fetch(`https://doctors-backend-ztcl.onrender.com/auth/updatepassword`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ password: newPassword }),
+        body: JSON.stringify({email,newpassword}),
       });
 
       if (response.ok) {
@@ -139,10 +164,7 @@ const Profile = () => {
   }
 
 
-  const handleProfilePicChange = (e) => {
-    const file = e.target.files[0]; // Get the first file from the input
-    setProfilepic(file); // Set the file as the profile picture
-  }
+ 
 
   useEffect(() => {
     fetchData();
@@ -179,12 +201,21 @@ const Profile = () => {
               <p className='font-light'>{profile.bloodgroup}</p>
             </div>
           </div>
-          <div className='flex items-center justify-center'>
+          <div className='flex flex-col items-center justify-center gap-6'>
             <button
               className='bg-[#276A7B] text-white px-2 py-1 rounded-lg'
               onClick={() => setIsDialogOpen(true)}
             >
               Update Setting
+            </button>
+            <button
+              className='bg-[#276A7B] text-white px-2 py-1 rounded-lg'
+              onClick={() =>{
+                logout()
+              nav("/")
+              }}
+            >
+              Logout
             </button>
           </div>
         </div>
@@ -246,6 +277,23 @@ const Profile = () => {
             </div>
 
             <div className='flex flex-row  gap-4 justify-between'>
+            <div className='w-full'>
+                <label className='block font-semibold' htmlFor='gender'>Gender</label>
+                <select
+                  id='gender'
+                  type='text'
+                  placeholder='Enter gender'
+                  value={gender}
+                  onChange={(e) => setgender(e.target.value)}
+                  className='w-full px-3 py-2 border rounded'
+                >
+                  <option value=''>Select gender</option>
+                  <option value='Male'>Male</option>
+                  <option value='Female'>Female</option>
+                </select>
+              </div>
+              </div>
+            <div className='flex flex-row  gap-4 justify-between'>
               <div className=' w-full'>
                 <label className='block font-semibold'>DOB</label>
                 <input
@@ -278,6 +326,9 @@ const Profile = () => {
                 </select>
               </div>
             </div>
+
+            
+            
 
 
             <div className='flex flex-row  gap-4 justify-between'>
@@ -353,22 +404,33 @@ const Profile = () => {
               Save Changes
             </button>
 
-            {/* <h2 className='block font-semibold text-2xl'>Change Password</h2>
-
+            <h2 className='block font-semibold text-2xl'>Change Password</h2>
+            <div className='mb-4'>
+              <label className='block text-gray-700 w-fit mb-2' htmlFor='new-password'>Email</label>
+              <input
+                placeholder='E-mail'
+                type='text'
+                name='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className='border p-1 rounded w-full'
+              />
+            </div>
+          
             <div className='mb-4'>
               <label className='block text-gray-700 w-fit mb-2' htmlFor='new-password'>New Password</label>
               <input
                 id='new-password'
                 type='password'
-                value={newPassword}
+                value={newpassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder='Enter New Password'
                 className='w-full px-3 py-2 border rounded'
                 autoComplete='new-password'
               />
-            </div> */}
+            </div>
 
-            {/* <div className='mb-4'>
+            <div className='mb-4'>
               <label className='block text-gray-700 w-fit mb-2' htmlFor='retype-new-password'>Re-Enter New Password</label>
               <input
                 id='retype-new-password'
@@ -378,9 +440,9 @@ const Profile = () => {
                 placeholder='Re-Enter New Password'
                 className='w-full px-3 py-2 border rounded'
               />
-            </div> */}
+            </div>
 
-            {/* <div className='flex space-x-4'>
+            <div className='flex space-x-4'>
 
               <button
                 className='bg-[#276A7B] text-white px-2 py-1 rounded'
@@ -394,7 +456,7 @@ const Profile = () => {
               >
                 Cancel
               </button>
-            </div> */}
+            </div>
 
 
 
