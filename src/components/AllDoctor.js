@@ -8,6 +8,37 @@ import { IoClipboardOutline } from "react-icons/io5";
 import { GrLocation } from "react-icons/gr";
 
 const AllDoctor = () => {
+
+  const [filteredBookings, setFilteredBookings] = useState([]);
+  useEffect(()=>{
+      const fetchData = async() =>{
+       // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+       const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
+         {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           body: JSON.stringify({ }),
+         }
+       );
+       const dataResponse = await data.json()
+   
+       console.log(dataResponse);
+   
+       const storedId = localStorage.getItem('userId');
+       if (storedId) {
+          // Filter bookings based on both type and _id matching storedId
+          const matchedBookings = dataResponse.filter(el => el.type === "doctor" );
+          console.log('Matched bookings:', matchedBookings);
+      
+          setFilteredBookings(matchedBookings);
+      }
+  
+       console.log(filteredBookings);
+      }
+      fetchData()
+     },[])
   const [data, setData] = useState([
     {
       id: 1,
@@ -51,14 +82,14 @@ const AllDoctor = () => {
     },
   ]);
 
-  const [filteredData, setFilteredData] = useState(data);
+  const [filteredData, setFilteredData] = useState(filteredBookings);
   const [searchDoctor, setSearchDoctor] = useState('');
   const [searchLocation, setSearchLocation] = useState('');
   const [searchGender, setSearchGender] = useState('');
   const [searchSpecialist, setSearchSpecialist] = useState('');
 
   useEffect(() => {
-    let filtered = data;
+    let filtered = filteredBookings;
 
     if (searchDoctor) {
       filtered = filtered.filter(doctor =>
@@ -79,7 +110,7 @@ const AllDoctor = () => {
     }
 
     setFilteredData(filtered);
-  }, [searchDoctor, searchLocation, searchGender, searchSpecialist, data]);
+  }, [searchDoctor, searchLocation, searchGender, searchSpecialist, filteredBookings]);
 
   return (
     <div>
@@ -133,13 +164,13 @@ const AllDoctor = () => {
             <div key={el.id} className='flex items-center justify-between border p-4 rounded-lg'>
               <div className='flex items-center'>
                 <div className='  p-2 mx-auto bg-white'>
-                  <img className='h-[220px] w-[220px]  rounded-md overflow-hidden  bg-[#017A884D]' src={el.image} alt='doctor' />
+                  <img className='h-[220px] w-[220px]  rounded-md overflow-hidden  bg-[#017A884D]' src={el?.profilepic} alt='doctor' />
                 </div>
                 <div className=' mx-auto text-start  py-3 justify-between flex flex-col bg-white'>
-                  <div className=' textxl md:text-2xl text-gray-600 font-bold'>{el.name}</div>
+                  <div className=' textxl md:text-2xl text-gray-600 font-bold'>{el?.firstname}</div>
                   <div className='text-lg text-green-700'><MdOutlineVerified /></div>
-                  <div >{el.service}</div>
-                  <div className="text-[#007569]  text-sm font-bold">{el.specialty}</div>
+                  <div >{el?.services.specialities}</div>
+                  <div className="text-[#007569]  text-sm font-bold">{el?.specialty}</div>
                   <p className="text-yellow-500 text-xl ">★★★★★</p>
                   <div className=' flex gap-2 '>
                     <FaRegHeart className='border-[0.5px] border-gray-600 rounded-sm p-1 text-xl' /><span> Add to favourites</span>
@@ -147,15 +178,15 @@ const AllDoctor = () => {
                 </div>
               </div>
               <div className='space-y-2'>
-                <div className='flex gap-2'> <IoIosCalendar className='mt-1 text-gray-700' /> {el.availableDays}</div>
-                <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el.feedbackCount} Feedbacks</div>
+                <div className='flex gap-2'> <IoIosCalendar className='mt-1 text-gray-700' /> {el?.availableDays}</div>
+                <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el?.feedbackCount} Feedbacks</div>
                 <div className='flex gap-2 text-[#007569]'> <IoClipboardOutline className='mt-1 font-bold text-gray-700' />Available Now</div>
-                <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el.location}</div>
+                <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el?.location}</div>
 
 
 
 
-                <Link to={`/doctors/profile/${el.id}`}>
+                <Link to={`/doctors/profile/${el._id}`}>
                   <button className='border border-[#007569] text-sm md:text-md text-[#007569] px-1 md:py-2 py-1 rounded-md'>View Profile</button>
                 </Link>
               </div>

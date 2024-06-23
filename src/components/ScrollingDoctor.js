@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import DoctorCard from './DoctorCard'; // Assuming DoctorCard is in the same directory or adjust the path accordingly
 import doctors from '../constant/doctorarray';
 import { IoIosArrowBack } from "react-icons/io";
