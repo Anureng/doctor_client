@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Appointment from './Appointment';
-import SaveDoctor from './SaveDoctor';
 import {storage} from "../firebase.config";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
+import Appointment from './Appointment';
+import SaveDoctor from './SaveDoctor';
 import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,6 +25,30 @@ const Profile = () => {
   const {logout} = useAuth();
   const nav=useNavigate();
 
+  
+  const handlePersonalInfoSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const id = localStorage.getItem("userId");
+      const response = await fetch(`https://doctors-backend-ztcl.onrender.com/updatesettings/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ firstname, email, lastname, location, Phoneno, address, dob, bloodgroup, password: newpassword, profilepic:profilepic }),
+      });
+
+      if (response.ok) {
+        alert("Personal Information Updated");
+        fetchData();
+        setIsDialogOpen(false)
+      } else {
+        alert("Something went wrong...please check credentials");
+      }
+    } catch (error) {
+      console.error("Error during update:", error);
+    }
+  }
 
   const uploadimage = async(e) =>{
     const id = localStorage.getItem("userId");
@@ -43,30 +67,6 @@ const Profile = () => {
     }
   }
 
-  
-  const handlePersonalInfoSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const id = localStorage.getItem("userId");
-      const response = await fetch(`https://doctors-backend-ztcl.onrender.com/updatesettings/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ firstname, email,gender, lastname, location, Phoneno, address, dob, bloodgroup, profilepic }),
-      });
-
-      if (response.ok) {
-        alert("Personal Information Updated");
-        fetchData();
-        setIsDialogOpen(false)
-      } else {
-        alert("Something went wrong...please check credentials");
-      }
-    } catch (error) {
-      console.error("Error during update:", error);
-    }
-  }
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
