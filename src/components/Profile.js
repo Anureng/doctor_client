@@ -3,7 +3,6 @@ import {storage} from "../firebase.config";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
 import Appointment from './Appointment';
 import SaveDoctor from './SaveDoctor';
-import {storage} from "../firebase.config";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
 import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
