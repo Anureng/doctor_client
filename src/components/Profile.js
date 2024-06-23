@@ -35,7 +35,7 @@ const Profile = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ firstname, email, lastname, location, Phoneno, address, dob, bloodgroup, password: newPassword, profilepic:profilepic }),
+        body: JSON.stringify({ firstname, email, lastname, location, Phoneno, address, dob, bloodgroup, password: newpassword, profilepic:profilepic }),
       });
 
       if (response.ok) {
@@ -56,7 +56,7 @@ const Profile = () => {
     if (e) {
         uploadBytes(imageRef1, e).then(() => {
             getDownloadURL(imageRef1).then((url) => {
-                setProfilepic(url);
+                setprofilepic(url);
                 alert("uploaded")
             }).catch((error) => {
                 console.log(error.message, "error geting the image url");
