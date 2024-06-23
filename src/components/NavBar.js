@@ -36,15 +36,15 @@ function NavBar() {
                 <input placeholder='Search Doctor' className={`focus:outline-none w-96 rounded-md ${open ? 'text-black ' : 'text-black placeholder-black'}`} />
               </div>
               <Link to="/" className=' '>
-                <li className={`cursor-pointer   border-b flex items-center justify-center ${open ? 'bg-[#007569]  text-white p-2 ' : ''}`}>Home</li>
+                <li className={`cursor-pointer  md:border-none border-b flex items-center justify-center ${open ? 'bg-[#007569]  text-white p-2 ' : ''}`}>Home</li>
               </Link>
               <Link to="/">
-                <li className={`cursor-pointer    border-b flex items-center justify-center ${open ? 'bg-[#007569]  text-white p-2 ' : ''}`}>Service</li>
+                <li className={`cursor-pointer md:border-none   border-b flex items-center justify-center ${open ? 'bg-[#007569]  text-white p-2 ' : ''}`}>Service</li>
               </Link>
               <Link to="/doctors">
-                <li className={`cursor-pointer    border-b flex items-center justify-center ${open ? 'bg-[#007569]  text-white p-2 ' : ''}`}>Doctors</li>
+                <li className={`cursor-pointer  md:border-none  border-b flex items-center justify-center ${open ? 'bg-[#007569]  text-white p-2 ' : ''}`}>Doctors</li>
               </Link>
-              <Link to="/about"><li className={`cursor-pointer  border-b  flex items-center justify-center ${open ? 'bg-[#007569] text-white p-2 ' : ''}`}>About Us <IoIosArrowDown className='text-xl' /></li></Link>
+              <Link to="/about"><li className={`cursor-pointer md:border-none border-b  flex items-center justify-center ${open ? 'bg-[#007569] text-white p-2 ' : ''}`}>About Us <IoIosArrowDown className='text-xl' /></li></Link>
 
               {getdata ? (
                 <Link to="/profile" className={`mt-4 lg:mt-0 ${open ? 'bg-[#007569] w-full flex items-center justify-center text-white p-2 rounded-md' : ''}`}>
