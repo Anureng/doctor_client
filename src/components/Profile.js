@@ -27,24 +27,6 @@ const Profile = () => {
   const {logout} = useAuth();
   const nav=useNavigate();
 
-
-  const uploadimage = async(e) =>{
-    const id = localStorage.getItem("userId");
-    const imageRef1 = ref(storage,id);
-    if (e) {
-        uploadBytes(imageRef1, e).then(() => {
-            getDownloadURL(imageRef1).then((url) => {
-                setprofilepic(url);
-                alert("uploaded")
-            }).catch((error) => {
-                console.log(error.message, "error geting the image url");
-            })
-        }).catch((error) => {
-            console.log(error.message);
-        })
-    }
-  }
-
   
   const handlePersonalInfoSubmit = async (e) => {
     e.preventDefault();
