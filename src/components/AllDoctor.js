@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useSavedDoctors } from '../SavedDoctorsContext';
 import { Link } from "react-router-dom";
-import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import { MdOutlineVerified } from "react-icons/md";
-import { BiSolidShoppingBag } from "react-icons/bi";
 import { IoIosCalendar } from "react-icons/io";
 import { IoClipboardOutline } from "react-icons/io5";
 import { GrLocation } from "react-icons/gr";
@@ -44,41 +44,41 @@ const AllDoctor = () => {
       id: 1,
       name: "Dr. Wanitha ",
       image: "/doctor1.png",
+      service: "MBBS",
       degree: "Dentist",
       clinicName: "Smile clinic",
       availableDays: "Mon, Wed, Thu, Fri, Sat",
       location: "america",
-
     },
     {
       id: 2,
       name: "Dr. John Doe",
       image: "/doctor1.png",
-      degree: "MBBS",
+      service: "MBBS",
+      degree: "neurologiest",
       clinicName: "Health ",
       availableDays: "Mon, Wed, Thu, Fri, Sat",
       location: "america",
-
     },
     {
       id: 3,
       name: "Dr. Wanitha",
       image: "/doctor1.png",
+      service: "MBBS",
       degree: "Dentist",
       clinicName: "Life Care",
       availableDays: "Mon, Wed, Thu, Fri, Sat",
       location: "america",
-
     },
     {
       id: 4,
       name: "Dr. Emily",
       image: "/doctor1.png",
+      service: "MBBS",
       degree: "eye specialist",
       clinicName: "jkf",
       availableDays: "Mon, Wed, Thu, Fri, Sat",
       location: "jkk",
-
     },
   ]);
 
@@ -110,7 +110,15 @@ const AllDoctor = () => {
     }
 
     setFilteredData(filtered);
-  }, [searchDoctor, searchLocation, searchGender, searchSpecialist, filteredBookings]);
+  }, [searchDoctor, searchLocation, searchGender, searchSpecialist, data]);
+
+  const toggleSaveDoctor = (doctor) => {
+    if (isDoctorSaved(doctor.id)) {
+      removeSavedDoctor(doctor.id);
+    } else {
+      saveDoctor(doctor);
+    }
+  };
 
   return (
     <div>
