@@ -39,48 +39,7 @@ const AllDoctor = () => {
       }
       fetchData()
      },[])
-  const [data, setData] = useState([
-    {
-      id: 1,
-      name: "Dr. Wanitha ",
-      image: "/doctor1.png",
-      service: "MBBS",
-      degree: "Dentist",
-      clinicName: "Smile clinic",
-      availableDays: "Mon, Wed, Thu, Fri, Sat",
-      location: "america",
-    },
-    {
-      id: 2,
-      name: "Dr. John Doe",
-      image: "/doctor1.png",
-      service: "MBBS",
-      degree: "neurologiest",
-      clinicName: "Health ",
-      availableDays: "Mon, Wed, Thu, Fri, Sat",
-      location: "america",
-    },
-    {
-      id: 3,
-      name: "Dr. Wanitha",
-      image: "/doctor1.png",
-      service: "MBBS",
-      degree: "Dentist",
-      clinicName: "Life Care",
-      availableDays: "Mon, Wed, Thu, Fri, Sat",
-      location: "america",
-    },
-    {
-      id: 4,
-      name: "Dr. Emily",
-      image: "/doctor1.png",
-      service: "MBBS",
-      degree: "eye specialist",
-      clinicName: "jkf",
-      availableDays: "Mon, Wed, Thu, Fri, Sat",
-      location: "jkk",
-    },
-  ]);
+
 
   const [filteredData, setFilteredData] = useState(filteredBookings);
   const [searchDoctor, setSearchDoctor] = useState('');
@@ -110,15 +69,9 @@ const AllDoctor = () => {
     }
 
     setFilteredData(filtered);
-  }, [searchDoctor, searchLocation, searchGender, searchSpecialist, data]);
+  }, [searchDoctor, searchLocation, searchGender, searchSpecialist, filteredBookings]);
 
-  const toggleSaveDoctor = (doctor) => {
-    if (isDoctorSaved(doctor.id)) {
-      removeSavedDoctor(doctor.id);
-    } else {
-      saveDoctor(doctor);
-    }
-  };
+
 
   return (
     <div>
@@ -181,7 +134,7 @@ const AllDoctor = () => {
                   <div className="text-[#007569]  text-sm font-bold">{el?.specialty}</div>
                   <p className="text-yellow-500 text-xl ">★★★★★</p>
                   <div className=' flex gap-2 '>
-                    <FaRegHeart className='border-[0.5px] border-gray-600 rounded-sm p-1 text-xl' /><span> Add to favourites</span>
+                    <FaHeart className='border-[0.5px] border-gray-600 rounded-sm p-1 text-xl' /><span> Add to favourites</span>
                   </div>
                 </div>
               </div>
