@@ -1,53 +1,54 @@
 import React, { useState, useEffect } from 'react';
+import { useSavedDoctors } from '../SavedDoctorsContext';
 import { Link } from "react-router-dom";
-import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import { MdOutlineVerified } from "react-icons/md";
-import { BiSolidShoppingBag } from "react-icons/bi";
 import { IoIosCalendar } from "react-icons/io";
 import { IoClipboardOutline } from "react-icons/io5";
 import { GrLocation } from "react-icons/gr";
 
 const AllDoctor = () => {
+  const { saveDoctor, removeSavedDoctor, isDoctorSaved } = useSavedDoctors();
   const [data, setData] = useState([
     {
       id: 1,
       name: "Dr. Wanitha ",
       image: "/doctor1.png",
+      service: "MBBS",
       degree: "Dentist",
       clinicName: "Smile clinic",
       availableDays: "Mon, Wed, Thu, Fri, Sat",
       location: "america",
-
     },
     {
       id: 2,
       name: "Dr. John Doe",
       image: "/doctor1.png",
-      degree: "MBBS",
+      service: "MBBS",
+      degree: "neurologiest",
       clinicName: "Health ",
       availableDays: "Mon, Wed, Thu, Fri, Sat",
       location: "america",
-
     },
     {
       id: 3,
       name: "Dr. Wanitha",
       image: "/doctor1.png",
+      service: "MBBS",
       degree: "Dentist",
       clinicName: "Life Care",
       availableDays: "Mon, Wed, Thu, Fri, Sat",
       location: "america",
-
     },
     {
       id: 4,
       name: "Dr. Emily",
       image: "/doctor1.png",
+      service: "MBBS",
       degree: "eye specialist",
       clinicName: "jkf",
       availableDays: "Mon, Wed, Thu, Fri, Sat",
       location: "jkk",
-
     },
   ]);
 
@@ -80,6 +81,14 @@ const AllDoctor = () => {
 
     setFilteredData(filtered);
   }, [searchDoctor, searchLocation, searchGender, searchSpecialist, data]);
+
+  const toggleSaveDoctor = (doctor) => {
+    if (isDoctorSaved(doctor.id)) {
+      removeSavedDoctor(doctor.id);
+    } else {
+      saveDoctor(doctor);
+    }
+  };
 
   return (
     <div>
@@ -132,17 +141,20 @@ const AllDoctor = () => {
           {filteredData.map((el) => (
             <div key={el.id} className='flex items-center justify-between border p-4 rounded-lg'>
               <div className='flex items-center'>
-                <div className='  p-2 mx-auto bg-white'>
-                  <img className='h-[220px] w-[220px]  rounded-md overflow-hidden  bg-[#017A884D]' src={el.image} alt='doctor' />
+                <div className='p-2 mx-auto bg-white'>
+                  <img className='h-[220px] w-[220px] rounded-md overflow-hidden bg-[#017A884D]' src={el.image} alt='doctor' />
                 </div>
-                <div className=' mx-auto text-start  py-3 justify-between flex flex-col bg-white'>
-                  <div className=' textxl md:text-2xl text-gray-600 font-bold'>{el.name}</div>
+                <div className='mx-auto text-start py-3 justify-between flex flex-col bg-white'>
+                  <div className='text-xl md:text-2xl text-gray-600 font-bold'>{el.name}</div>
                   <div className='text-lg text-green-700'><MdOutlineVerified /></div>
-                  <div >{el.service}</div>
-                  <div className="text-[#007569]  text-sm font-bold">{el.specialty}</div>
-                  <p className="text-yellow-500 text-xl ">★★★★★</p>
-                  <div className=' flex gap-2 '>
-                    <FaRegHeart className='border-[0.5px] border-gray-600 rounded-sm p-1 text-xl' /><span> Add to favourites</span>
+                  <div>{el.service}</div>
+                  <div className="text-[#007569] text-sm font-bold">{el.specialty}</div>
+                  <p className="text-yellow-500 text-xl">★★★★★</p>
+                  <div onClick={() => toggleSaveDoctor(el)} className='flex gap-2 cursor-pointer'>
+                    <span>{isDoctorSaved(el.id) ? <FaHeart className='text-red-500 border p-1  border-gray-500 text-2xl'/>:<FaHeart className='text-gray-500 border p-1  border-gray-500 text-2xl '/>}
+                    </span>
+                    
+                    <span>{isDoctorSaved(el.id) ? 'Remove from favourites' : 'Add to favourites'}</span>
                   </div>
                 </div>
               </div>
@@ -151,10 +163,6 @@ const AllDoctor = () => {
                 <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el.feedbackCount} Feedbacks</div>
                 <div className='flex gap-2 text-[#007569]'> <IoClipboardOutline className='mt-1 font-bold text-gray-700' />Available Now</div>
                 <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el.location}</div>
-
-
-
-
                 <Link to={`/doctors/profile/${el.id}`}>
                   <button className='border border-[#007569] text-sm md:text-md text-[#007569] px-1 md:py-2 py-1 rounded-md'>View Profile</button>
                 </Link>
