@@ -1,22 +1,69 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RxCrossCircled } from "react-icons/rx";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { useParams } from 'react-router-dom';
 
 const FeedbackModal = ({ doctor, onClose, onSubmit }) => {
   const [recommend, setRecommend] = useState(null);
   const [friendliness, setFriendliness] = useState(0);
   const [feedbackText, setFeedbackText] = useState("");
 
-  const handleSubmit = () => {
-    const feedback = {
-      doctorId: doctor.id,
-      recommend,
-      friendliness,
-      feedbackText,
-    };
-    onSubmit(feedback);
+  const id = useParams()
+
+  const [filteredBookings, setFilteredBookings] = useState([]);
+  useEffect(()=>{
+      const fetchData = async() =>{
+       // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+       const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
+         {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           body: JSON.stringify({ }),
+         }
+       );
+       const dataResponse = await data.json()
+   
+  
+   
+       const storedId = localStorage.getItem('userId');
+       if (storedId) {
+          // Filter bookings based on both type and _id matching storedId
+          const matchedBookings = dataResponse.filter(el => el._id === id );
+      
+          setFilteredBookings(matchedBookings);
+      }
+
+      }
+      fetchData()
+     },[filteredBookings])
+
+  const handleSubmit = async() => {
+
+    const getId = localStorage.getItem("userId")
+    const data = await fetch("https://doctors-backend-ztcl.onrender.com/addfeedback",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({userid:getId , doctorid:id,feedback:feedbackText , recommend:recommend , rating:String(friendliness) }),
+      }
+    );
+    const dataResponse = await data.json()
+    console.log(dataResponse);
+
+if(dataResponse.ok){
+  alert("feedback added")
+}
+else{
+  alert("create Account")
+}
+    // onSubmit(feedback);
     onClose();
   };
+
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">

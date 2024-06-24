@@ -29,9 +29,9 @@ function App() {
             <Route path='/doctors/profile/:id' element={<DoctorProfile/>}/>
             <Route path='/about' element={<About/>}/>
             <Route path='/profile' element={<UserProfile/>}/>
-            <Route path='/appointment' element={<AppointmentPage/>}/>
-            <Route path='/paymentSuccessFull' element={<PaymentSuccessFullPage/>}/>
-            <Route path='/payment' element={<Payment/>}/>
+            <Route path='/appointment/:id' element={<AppointmentPage/>}/>
+            <Route path='/paymentSuccessFull/:id' element={<PaymentSuccessFullPage/>}/>
+            <Route path='/payment/:id' element={<Payment/>}/>
           </Routes>
         </SavedDoctorsProvider>
       </BrowserRouter>

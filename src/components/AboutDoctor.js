@@ -68,6 +68,8 @@ const doctors = [
     },
 ];
 
+
+
 const dummyReviews = [
     {
         recommend: true,
@@ -93,14 +95,43 @@ function AboutDoctor() {
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
     const [feedbacks, setFeedbacks] = useState([...dummyReviews]);
 
+      const [filteredBookings, setFilteredBookings] = useState([]);
+  useEffect(()=>{
+      const fetchData = async() =>{
+       // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+       const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
+         {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           body: JSON.stringify({ }),
+         }
+       );
+       const dataResponse = await data.json()
+   
+       console.log(dataResponse);
+   
+       const storedId = localStorage.getItem('userId');
+       if (storedId) {
+          // Filter bookings based on both type and _id matching storedId
+          const matchedBookings = dataResponse.filter(el => el._id === id );
+          console.log('Matched bookings:', matchedBookings);
+      
+          setFilteredBookings(matchedBookings);
+      }
+  
+       console.log(filteredBookings);
+      }
+      fetchData()
+     },[filteredBookings])
+
     useEffect(() => {
-        const doctor = doctors.find(doc => doc.id === parseInt(id));
+        const doctor = doctors.find(doc => doc.id === id);
         setSelectedDoctor(doctor);
     }, [id]);
 
-    if (!selectedDoctor) {
-        return <div>Loading...</div>;
-    }
+ 
 
     const openFeedbackModal = () => {
         setShowFeedbackModal(true);
@@ -119,13 +150,13 @@ function AboutDoctor() {
             <div className='w-[80%] mx-auto'>
                 <section className='lg:flex lg:flex-row lg:mx-auto md:mx-10 grid grid-cols-1 bg-white p-4 gap-2 rounded-lg border-[1px] border-[#BABABA] mx-auto justify-between'>
                     <div className='lg:w-[25%] p-2 mx-auto bg-white'>
-                        <img className='h-[220px] w-[220px] rounded-md overflow-hidden bg-[#017A884D]' src={selectedDoctor.image} alt='doctor' />
+                        <img className='h-[220px] w-[220px] rounded-md overflow-hidden bg-[#017A884D]' src={filteredBookings.map((el)=>el.profilepic)} alt='doctor' />
                     </div>
                     <div className='md:w-[20%] mx-auto text-start py-3 justify-between flex flex-col bg-white'>
-                        <div className='text-2xl text-gray-600 font-bold'>{selectedDoctor.name}</div>
+                        <div className='text-2xl text-gray-600 font-bold'>{filteredBookings.map((el)=>el.firstname)}</div>
                         <div className='text-lg text-green-700'><MdOutlineVerified /></div>
-                        <div>{selectedDoctor.service}</div>
-                        <div className="text-[#007569] text-sm font-bold">{selectedDoctor.specialty}</div>
+                        <div>{filteredBookings.map((el)=>el.services.specialities)}</div>
+                        <div className="text-[#007569] text-sm font-bold">{filteredBookings.map((el)=>el.services.specialities)}</div>
                         <p className="text-yellow-500 text-xl">★★★★★</p>
                         <div className='flex gap-2'>
                             <FaRegHeart className='border-[0.5px] border-gray-600 rounded-sm p-1 text-xl' /><span>Add to favourites</span>
@@ -135,33 +166,33 @@ function AboutDoctor() {
                         <div className='flex gap-3 mx-auto flex-col'>
                             <div className='flex gap-2'>
                                 <FaUserAlt className='border-[0.5px] text-[#A300EF] border-[#00000040] rounded-sm p-1 text-2xl' />
-                                <span className='text-xl text-gray-700'>{selectedDoctor.patientsTreated} Patients Treated</span>
+                                {/* <span className='text-xl text-gray-700'>{selectedDoctor.patientsTreated} Patients Treated</span> */}
                             </div>
                             <div className='flex gap-2'>
                                 <BiSolidShoppingBag className='border-[0.5px] text-[#00A31A] border-[#00000040] rounded-sm text-2xl' />
-                                <span className='text-xl text-gray-700'>{selectedDoctor.experience}</span>
+                                <span className='text-xl text-gray-700'>{filteredBookings.map((el)=>el.exp.experience)}</span>
                             </div>
                         </div>
                         <div className='flex'>
                             <button className="flex flex-col p-1 py-2 border-[1px] bg-[#F6F6F6] rounded-l-lg border-[#BABABA]">Clinic
-                                <p className='px-3'>{selectedDoctor.clinicName}</p>
+                                <p className='px-3'>{filteredBookings.map((el)=>el.clinic)}</p>
                             </button>
                             <button className="flex flex-col p-1 py-2 border-[1px] bg-[#F6F6F6] rounded-r-lg border-[#BABABA]">Location
-                                <p className='px-3'>{selectedDoctor.location}</p>
+                                <p className='px-3'>{filteredBookings.map((el)=>el.location)}</p>
                             </button>
                         </div>
                     </div>
                     <div className='md:w-[25%] mx-auto flex gap-4 flex-col bg-white'>
-                        <div className='flex gap-2'><IoIosCalendar className='mt-1 text-gray-700' /> {selectedDoctor.availableDays}</div>
-                        <div className='flex gap-2'><GrLocation className='mt-1 font-bold text-gray-700' />{selectedDoctor.feedbackCount} Feedbacks</div>
+                        {/* <div className='flex gap-2'><IoIosCalendar className='mt-1 text-gray-700' /> {selectedDoctor.availableDays}</div> */}
+                        {/* <div className='flex gap-2'><GrLocation className='mt-1 font-bold text-gray-700' />{selectedDoctor.feedbackCount} Feedbacks</div> */}
                         <div className='flex gap-2 text-[#007569]'><IoClipboardOutline className='mt-1 font-bold text-gray-700' />Available Now</div>
-                        <div className='flex gap-2'><GrLocation className='mt-1 font-bold text-gray-700' />{selectedDoctor.location}</div>
+                        <div className='flex gap-2'><GrLocation className='mt-1 font-bold text-gray-700' />{filteredBookings.map((el)=>el.location)}</div>
                         <div className='w-[80%] gap-1 mb-3 font-bold flex flex-row'>
                             <button className="border-[2px] border-[#276A7B] rounded-lg p-1 text-[#276a7b] w-[140px]" onClick={openFeedbackModal}>
                                 Add Feedback
                             </button>
                             <button className='border-[2px] border-[#276A7B] rounded-lg p-1 bg-[#276a7b] text-white w-[140px]'>
-                                <Link to="/appointment">
+                                <Link to={`/appointment/${id}`}>
                                     Book Appointment
                                 </Link>
                             </button>
@@ -192,7 +223,7 @@ function AboutDoctor() {
                         <div className="mt-4">
                             {activeTab === 'about' && (
                                 <div className="p-4 rounded-lg">
-                                    <h2 className="text-xl pb-10 font-bold">About {selectedDoctor.name}</h2>
+                                    <h2 className="text-xl pb-10 font-bold">About {filteredBookings.map((el)=>el.firstname)}</h2>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                                 </div>
                             )}

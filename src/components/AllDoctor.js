@@ -130,7 +130,7 @@ const AllDoctor = () => {
                 <div className=' mx-auto text-start  py-3 justify-between flex flex-col bg-white'>
                   <div className=' textxl md:text-2xl text-gray-600 font-bold'>{el?.firstname}</div>
                   <div className='text-lg text-green-700'><MdOutlineVerified /></div>
-                  <div >{el?.services.specialities}</div>
+                  <div >{el?.services?.specialities}</div>
                   <div className="text-[#007569]  text-sm font-bold">{el?.specialty}</div>
                   <p className="text-yellow-500 text-xl ">★★★★★</p>
                   <div className=' flex gap-2 '>

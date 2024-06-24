@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import { json, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 const CreateAppointment = () => {
   const [date, onChange] = useState(new Date());
@@ -11,9 +12,40 @@ const CreateAppointment = () => {
   const[mob,setMob] = useState("")
   const[time,setTime] = useState("")
   const navigate = useNavigate()
+  const { id } = useParams();
 
   const datee = ["11:00 AM" ,"12:00 PM","01:30 PM","03:00 PM","04:00 PM","05:00 PM","07:30 PM" ]
 
+  const [filteredBookings, setFilteredBookings] = useState([]);
+  useEffect(()=>{
+      const fetchData = async() =>{
+       // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+       const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
+         {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           body: JSON.stringify({ }),
+         }
+       );
+       const dataResponse = await data.json()
+   
+       console.log(dataResponse);
+   
+       const storedId = localStorage.getItem('userId');
+       if (storedId) {
+          // Filter bookings based on both type and _id matching storedId
+          const matchedBookings = dataResponse.filter(el => el._id === id );
+          console.log('Matched bookings:', matchedBookings);
+      
+          setFilteredBookings(matchedBookings);
+      }
+  
+       console.log(filteredBookings);
+      }
+      fetchData()
+     },[filteredBookings])
 
   useEffect(()=>{
    const fetchData = async() =>{
@@ -48,10 +80,11 @@ const CreateAppointment = () => {
 
   const handleAppointment = async() =>{
     try {
-      const doct = "66765d7accfe3f3987059f39"
-      const type = "Allen"
-      const fee = "500"
-      const doctorname ="Allen"
+      const doct = id
+      const type = filteredBookings.map((el)=>el.type).join(' ')
+      console.log(type);
+      const fee = filteredBookings.map((el)=>el.fees).join(' ')
+      const doctorname =filteredBookings.map((el)=>el.firstname).join('')
       const payment = false
       const userid =  localStorage.getItem("userId");
       const response = await fetch(
@@ -66,7 +99,7 @@ const CreateAppointment = () => {
       );
 
       if (response.ok) {
-        navigate('/payment')
+        navigate(`/payment/${id}`)
       } else {
         alert("something went wrong...please check credential");
       }
@@ -116,21 +149,21 @@ const CreateAppointment = () => {
           <p>Location</p>
           <div className='flex items-center justify-between rounded-t-lg p-3 bg-[#EFEFEF]'>
             <p>Your Clinic Name</p>
-            <p className='font-light'>213 OLD Trafford UK</p>
+            <p className='font-light'>{filteredBookings.map((el)=>el.clinic)}</p>
           </div>
           </div>
           
           <div className='bg-[#EFEFEF] divide-y divide-blue-200 '>
           <div className='flex items-center justify-between  p-3 '>
             <p>Consultation Fee</p>
-            <p className='font-light'>500</p>
+            <p className='font-light'>{filteredBookings.map((el)=>el.fees)}</p>
           </div>
 
           
 
           <div className='flex items-center justify-between  p-3 text-[#007569] font-light'>
             <p>Total</p>
-            <p className='font-light'>500</p>
+            <p className='font-light'>{filteredBookings.map((el)=>el.fees)}</p>
           </div>
           </div>
         </div>
@@ -162,21 +195,21 @@ const CreateAppointment = () => {
         <div className='p-4 space-y-4'>
         <div className='flex items-center justify-between'>
        <p>Doctor Booking x 1</p>
-       <p>500</p>
+       <p>{filteredBookings.map((el)=>el.fees)}</p>
         </div>
 
         <hr/>
 
         <div className='flex items-center justify-between'>
        <p>Sub Total</p>
-       <p>500</p>
+       <p>{filteredBookings.map((el)=>el.fees)}</p>
         </div>
 
         <hr/>
 
         <div className='flex text-[#007569] items-center justify-between'>
        <p>Total</p>
-       <p>500</p>
+       <p>{filteredBookings.map((el)=>el.fees)}</p>
         </div>
         </div>
       </div>

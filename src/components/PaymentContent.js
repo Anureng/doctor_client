@@ -1,16 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 
 function PaymentContent() {
+
+    const {id} = useParams()
     const [selectedPayment, setSelectedPayment] = useState('card');
 
     const handlePaymentChange = (e) => {
         setSelectedPayment(e.target.value);
     };
 
+    const [filteredBookings, setFilteredBookings] = useState([]);
+    useEffect(()=>{
+        const fetchData = async() =>{
+         // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+         const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
+           {
+             method: "POST",
+             headers: {
+               "Content-Type": "application/json",
+             },
+             body: JSON.stringify({ }),
+           }
+         );
+         const dataResponse = await data.json()
+     
+     
+         const storedId = localStorage.getItem('userId');
+         if (storedId) {
+            // Filter bookings based on both type and _id matching storedId
+            const matchedBookings = dataResponse.filter(el => el._id === id );
+          
+        
+            setFilteredBookings(matchedBookings);
+        }
+    
+      
+        }
+        fetchData()
+       },[filteredBookings])
+
     const key1 = "rzp_test_dTl39yx1h7zSnl"
 
  
+     const feesData = filteredBookings.map((el)=>el.fees)
 
 
     const loadScript = (src) => {
@@ -37,7 +71,7 @@ function PaymentContent() {
          const options = {
             key:key1,
             currency:"INR",
-            amount:100,
+            amount:filteredBookings.map((el)=>el.fees).join(' '),
             name: "Doctor", 
             description: "Ordering 1 thumbnail", 
             image: 'xyz',
@@ -56,6 +90,8 @@ function PaymentContent() {
             const paymentObject = new window.Razorpay(options);
             paymentObject.open()
      }
+
+   
 
      const renderPaymentForm = () => {
         switch (selectedPayment) {
@@ -92,7 +128,7 @@ function PaymentContent() {
                     </div>
                     <div className='mt-6 flex justify-end gap-4 space-x-4'>
                       <button className='px-4 py-1 border-[2px] border-[#007569] text-xl  rounded-md text-[#007569]'>Cancel</button>
-                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md' onClick={(e)=>razorPay(500)}>Next</button>
+                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md' onClick={(e)=>razorPay(feesData)}>Next</button>
                     </div>
                   </div>
                   
@@ -104,7 +140,7 @@ function PaymentContent() {
                         <p className='text-gray-700'>You will be redirected to PayPal to complete your payment.</p>
                         <div className='mt-6 flex justify-end gap-4 space-x-4'>
                       <button className='px-4 py-1 border-[2px] border-[#007569] text-xl  rounded-md text-[#007569]'>Cancel</button>
-                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md' onClick={(e)=>razorPay(500)}>Next</button>
+                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md' onClick={(e)=>razorPay(feesData)}>Next</button>
                     </div>
                     </div>
                 );
@@ -115,7 +151,7 @@ function PaymentContent() {
                         <p className='text-gray-700'>You will receive instructions on how to complete the prepayment.</p>
                         <div className='mt-6 flex justify-end gap-4 space-x-4'>
                       <button className='px-4 py-1 border-[2px] border-[#007569] text-xl  rounded-md text-[#007569]'>Cancel</button>
-                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md' onClick={(e)=>razorPay(500)}>Next</button>
+                      <button className='px-4 py-1 bg-[#276A7B] text-white text-xl rounded-md' onClick={(e)=>razorPay(feesData)}>Next</button>
                     </div> 
                     </div>
                 );

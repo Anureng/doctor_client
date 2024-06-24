@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdOutlineCancel } from "react-icons/md";
+import { useParams } from 'react-router-dom';
 const PaymentSuccess = () => {
+
+  const {id} = useParams()
   const [showPopup, setShowPopup] = useState(false);
 
   const handleAddReviewClick = () => {
@@ -10,6 +13,37 @@ const PaymentSuccess = () => {
   const handleClosePopup = () => {
     setShowPopup(false);
   };
+
+  const [filteredBookings, setFilteredBookings] = useState([]);
+  useEffect(()=>{
+      const fetchData = async() =>{
+       // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+       const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
+         {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           body: JSON.stringify({ }),
+         }
+       );
+       const dataResponse = await data.json()
+   
+       console.log(dataResponse);
+   
+       const storedId = localStorage.getItem('userId');
+       if (storedId) {
+          // Filter bookings based on both type and _id matching storedId
+          const matchedBookings = dataResponse.filter(el => el._id === id );
+          console.log('Matched bookings:', matchedBookings);
+      
+          setFilteredBookings(matchedBookings);
+      }
+  
+       console.log(filteredBookings);
+      }
+      fetchData()
+     },[filteredBookings])
 
   return (
     <div className='flex items-center justify-center mb-12'>

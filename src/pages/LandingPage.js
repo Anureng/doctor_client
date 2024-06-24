@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -17,6 +17,7 @@ import CustomerFeedback from '../components/CustomerFeedback';
 import ConcentricCircle4 from '../components/ConcentricCircle/ConcentricCircle4';
 import ConcentricCircle5 from '../components/ConcentricCircle/ConcentricCircle5';
 import ConcentricCircle6 from '../components/ConcentricCircle/ConcentricCircle6';
+import { NavLink } from 'react-router-dom';
 
 function LandingPage() {
 
@@ -27,6 +28,47 @@ function LandingPage() {
     { name: "Dr. Alan Brown", image: "/doctor5.png", specialty: "Dentist", service: "MBBS" },
     { name: "Dr. Emma Wilson", image: "/doctor6.png", specialty: "Dentist", service: "MBBS" }
   ];
+  const [filteredBookings, setFilteredBookings] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedDoctor, setSelectedDoctor] = useState("");
+
+  const fetchData = useCallback(async () => {
+    const data = await fetch("https://doctors-backend-ztcl.onrender.com/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
+    const dataResponse = await data.json();
+    console.log(dataResponse);
+
+    const storedId = localStorage.getItem('userId');
+    if (storedId) {
+      const matchedBookings = dataResponse.filter(el => el.type === "doctor");
+      console.log('Matched bookings:', matchedBookings);
+      setFilteredBookings(matchedBookings);
+    }
+    console.log(filteredBookings);
+  }, [filteredBookings]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handleLocationChange = (event) => {
+    setSelectedLocation(event.target.value);
+  };
+
+  const handleDoctorChange = (event) => {
+    setSelectedDoctor(event.target.value);
+  };
+
+  const filteredData = filteredBookings.filter((booking) => {
+    return (selectedLocation === "" || booking.location === selectedLocation) &&
+           (selectedDoctor === "" || booking.specialty === selectedDoctor);
+  });
+  
   return (
     <>
       <NavBar />
@@ -58,9 +100,42 @@ function LandingPage() {
         {/* main image and title ends */}
         {/* search bar */}
         <section className='flex flex-row font-sans gap-2 mt-10 bg-white shadow-lg shadow-[#00756926] py-3 px-4 mx-auto justify-between'>
-          <button className='flex justify-between border-2 w-full text-sm text-gray-700 rounded-md border-solid border-gray-400 px-2 md:mx-16 md:py-2 py-0.5'>Select a location <span className='text-xl pl-2'><RiArrowDropDownLine /></span></button>
-          <button className='flex justify-between border-2 w-full text-sm text-gray-700 rounded-md border-solid border-gray-400 px-2 md:mx-16 md:py-2 py-0.5'>Select Doctors <span className='text-xl pl-2'><RiArrowDropDownLine /></span></button>
-          <button className='bg-[#007569] px-2 md:px-5 py-0.5 rounded-md text-sm text-white'>SEARCH</button>
+        <section className='flex w-3/5 flex-row font-sans gap-2 mt-10 bg-white shadow-lg shadow-[#00756926] py-3 px-4 mx-auto justify-between'>
+          <select
+            className='flex justify-between border-2 w-full text-sm text-gray-700 rounded-md border-solid border-gray-400 px-2 md:mx-16 md:py-2 py-0.5'
+            value={selectedLocation}
+            onChange={handleLocationChange}
+          >
+            <option value="">Select a location</option>
+            {/* Add your location options here */}
+            {
+              filteredBookings.map((el)=>(
+
+                <option value="Location1">{el.location}</option>
+              ))
+            }
+            
+          </select>
+          <select
+            className='flex justify-between border-2 w-full text-sm text-gray-700 rounded-md border-solid border-gray-400 px-2 md:mx-16 md:py-2 py-0.5'
+            value={selectedDoctor}
+            onChange={handleDoctorChange}
+          >
+            <option value="">Select Doctors</option>
+            {/* Add your doctor specialty options here */}
+            {
+              filteredBookings.map((el)=>(
+
+                <option value="Location1">{el.services?.specialities}</option>
+              ))
+            }
+          </select>
+          <NavLink to="/doctors">
+          <button className='bg-[#007569] px-2 md:px-5 py-0.5 rounded-md text-sm text-white'>
+            SEARCH
+          </button>
+          </NavLink>
+        </section>
         </section>
         {/* search bar ends */}
         <div className=" mt-[80px] mb-5 text-white text-center bg-[#276A7B] rounded-full w-[90%] lg:w-[50%] md:w-[80%] md:px-4 mx-auto py-2  lg:text-3xl sm:text-[18px] text-xl">
