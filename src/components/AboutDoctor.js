@@ -95,6 +95,36 @@ function AboutDoctor() {
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
     const [feedbacks, setFeedbacks] = useState([...dummyReviews]);
 
+useEffect(()=>{
+    const fetchData = async() =>{
+     // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+     const data = await fetch("https://doctors-backend-ztcl.onrender.com/getallfeedback",
+       {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: JSON.stringify({ }),
+       }
+     );
+     const dataResponse = await data.json()
+     console.log(dataResponse);
+ 
+ 
+     const storedId = localStorage.getItem('userId');
+     if (storedId) {
+        // Filter bookings based on both type and _id matching storedId
+        const matchedBookings = dataResponse.filter(el => el.doctorid === id );
+        setFeedbacks(matchedBookings)
+    }
+
+  
+    }
+    fetchData()
+   },[feedbacks])
+
+  
+
       const [filteredBookings, setFilteredBookings] = useState([]);
       const localID = localStorage.getItem('userId');
   useEffect(()=>{
@@ -125,6 +155,7 @@ function AboutDoctor() {
       }
       fetchData()
      },[filteredBookings])
+       
 
     useEffect(() => {
         const doctor = doctors.find(doc => doc.id === id);
@@ -141,9 +172,7 @@ function AboutDoctor() {
         setShowFeedbackModal(false);
     };
 
-    const handleFeedbackSubmit = (feedback) => {
-        setFeedbacks(prevFeedbacks => [...prevFeedbacks, feedback]);
-    };
+
 
     return (
         <>
@@ -242,7 +271,7 @@ function AboutDoctor() {
                                                             <div>
                                                                 <p className='text-gray-700 font-semibold text-sm'>Name</p>
                                                                 <p className='text-yellow-500'>{'★'.repeat(feedback.friendliness)}</p>
-                                                                <p>{feedback.feedbackText}</p>
+                                                                <p>{feedback.feedback}</p>
                                                             </div>
                                                         </div>
                                                     </div>

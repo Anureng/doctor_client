@@ -41,15 +41,15 @@ function LandingPage() {
       body: JSON.stringify({}),
     });
     const dataResponse = await data.json();
-    console.log(dataResponse);
+    
 
     const storedId = localStorage.getItem('userId');
     if (storedId) {
       const matchedBookings = dataResponse.filter(el => el.type === "doctor");
-      console.log('Matched bookings:', matchedBookings);
+
       setFilteredBookings(matchedBookings);
     }
-    console.log(filteredBookings);
+    
   }, [filteredBookings]);
 
   useEffect(() => {
