@@ -96,6 +96,7 @@ function AboutDoctor() {
     const [feedbacks, setFeedbacks] = useState([...dummyReviews]);
 
       const [filteredBookings, setFilteredBookings] = useState([]);
+      const localID = localStorage.getItem('userId');
   useEffect(()=>{
       const fetchData = async() =>{
        // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
@@ -110,18 +111,17 @@ function AboutDoctor() {
        );
        const dataResponse = await data.json()
    
-       console.log(dataResponse);
    
        const storedId = localStorage.getItem('userId');
        if (storedId) {
           // Filter bookings based on both type and _id matching storedId
           const matchedBookings = dataResponse.filter(el => el._id === id );
-          console.log('Matched bookings:', matchedBookings);
+       
       
           setFilteredBookings(matchedBookings);
       }
   
-       console.log(filteredBookings);
+    
       }
       fetchData()
      },[filteredBookings])
@@ -198,7 +198,7 @@ function AboutDoctor() {
                             </button>
                         </div>
                         {showFeedbackModal && (
-                            <FeedbackModal doctor={selectedDoctor} onClose={closeFeedbackModal} onSubmit={handleFeedbackSubmit} />
+                            <FeedbackModal id={id} onClose={closeFeedbackModal} userLocalId={localID} />
                         )}
                     </div>
                 </section>

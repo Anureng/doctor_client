@@ -3,28 +3,35 @@ import { RxCrossCircled } from "react-icons/rx";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { useParams } from 'react-router-dom';
 
-const FeedbackModal = ({ doctor, onClose, onSubmit }) => {
-  const [recommend, setRecommend] = useState(null);
-  const [friendliness, setFriendliness] = useState(0);
+const FeedbackModal = ({ id, onClose, localID }) => {
+  const [recommend, setRecommend] = useState("");
+  const [friendliness, setFriendliness] = useState("");
   const [feedbackText, setFeedbackText] = useState("");
 
-  const id = useParams()
+  console.log(recommend);
+  console.log(friendliness);
+  console.log(feedbackText);
+  console.log(localID);
 
+
+  
   const [filteredBookings, setFilteredBookings] = useState([]);
+  const localIDI =  localStorage.getItem('userId');
   useEffect(()=>{
-      const fetchData = async() =>{
-       // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
-       const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
-         {
+    const fetchData = async() =>{
+      // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+      const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
+        {
            method: "POST",
            headers: {
              "Content-Type": "application/json",
-           },
-           body: JSON.stringify({ }),
-         }
-       );
-       const dataResponse = await data.json()
-   
+            },
+            body: JSON.stringify({ }),
+          }
+        );
+        const dataResponse = await data.json()
+        
+        console.log(id);
   
    
        const storedId = localStorage.getItem('userId');
@@ -39,27 +46,29 @@ const FeedbackModal = ({ doctor, onClose, onSubmit }) => {
       fetchData()
      },[filteredBookings])
 
+
   const handleSubmit = async() => {
 
-    const getId = localStorage.getItem("userId")
-    const data = await fetch("https://doctors-backend-ztcl.onrender.com/addfeedback",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({userid:getId , doctorid:id,feedback:feedbackText , recommend:recommend , rating:String(friendliness) }),
-      }
-    );
-    const dataResponse = await data.json()
-    console.log(dataResponse);
 
-if(dataResponse.ok){
-  alert("feedback added")
-}
-else{
-  alert("create Account")
-}
+    try {
+      const data = await fetch("https://doctors-backend-ztcl.onrender.com/addfeedback",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({userid:localIDI , doctorid:id,feedback:feedbackText , recommend:String(recommend) , rating:String(friendliness) }),
+        }
+      );
+      const dataResponse = await data.json()
+      console.log(dataResponse);
+
+    alert("feedback added")
+  
+    } catch (error) {
+      alert("do again")
+    }
+
     // onSubmit(feedback);
     onClose();
   };
@@ -78,14 +87,14 @@ else{
           <p className="font-semibold">I recommend this doctor:</p>
           <div className="flex space-x-2 mt-2">
             <button
-              className={`flex border-[1px] items-center gap-1 border-[#BABABA] ${recommend === true ? 'bg-green-500' : ''}`}
-              onClick={() => setRecommend(true)}
+              className={`flex border-[1px] items-center gap-1 border-[#BABABA] ${recommend === "true" ? 'bg-green-500' : ''}`}
+              onClick={() => setRecommend("true")}
             >
               <FaThumbsUp /> YES
             </button>
             <button
-              className={`flex border-[1px] items-center gap-1 border-[#BABABA] ${recommend === false ? 'bg-red-500' : ''}`}
-              onClick={() => setRecommend(false)}
+              className={`flex border-[1px] items-center gap-1 border-[#BABABA] ${recommend === "false" ? 'bg-red-500' : ''}`}
+              onClick={() => setRecommend("false")}
             >
               <FaThumbsDown /> NO
             </button>
