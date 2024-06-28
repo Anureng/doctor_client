@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { CiSearch } from "react-icons/ci";
-import { IoIosArrowDown } from "react-icons/io";
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 import { Link } from 'react-router-dom';
 import { FaUser } from "react-icons/fa";
@@ -8,8 +7,8 @@ import { FaUser } from "react-icons/fa";
 function NavBar() {
   const [open, setOpen] = useState(false);
   const [doctors, setDoctors] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
-  const [filteredDoctors, setFilteredDoctors] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const getdata = localStorage.getItem("token");
 
   useEffect(() => {
@@ -22,99 +21,93 @@ function NavBar() {
         body: JSON.stringify({ type: "doctor" }),
       });
       const data = await response.json();
-      
-      setDoctors(data);
+
+      setDoctors(data.filter(el => el.type === "doctor"));
+
     };
 
     fetchDoctors();
   }, []);
 
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchInput(value);
-    if (value) {
-      const filtered = doctors.filter((doctor) =>
-        doctor.name && doctor.name.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredDoctors(filtered);
-    } else {
-      setFilteredDoctors([]);
-    }
+  const filteredDoctors = doctors.filter(doctor =>
+    doctor.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    doctor.services.specialities.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  const clearSearch = () => {
+    setSearchQuery("");
   };
 
   return (
-
     <>
-
       <div className={`p-4 ${open ? 'bg-white' : 'bg-transparent'}`}>
-        <div className={`rounded-full flex flex-col md:flex-row items-center justify-between p-4 ${open ? 'bg-white text-black' : 'bg-[#007569] text-white'}`}>
-
+        <div className={`flex flex-col lg:rounded-full md:flex-row items-center bg-[#007569] justify-between p-4 ${open ? 'rounded-xl' : 'bg-[#007569] rounded-[20px] text-white'}`}>
           <div className={`flex justify-between ${open ? "bg-[#007569] w-full p-2 rounded-lg text-white" : ""}`}>
             <div className='font-bold lg:text-2xl'>
-              <Link to="/" className={open ? 'text-white ' : 'text-white '}>Doctor +</Link>
+              <Link to="/" className="text-white">Doctor +</Link>
             </div>
-
             <div className='lg:hidden' onClick={() => setOpen(!open)}>
               {open ? <RxCross1 className='text-2xl' /> : <RxHamburgerMenu className='text-2xl' />}
             </div>
           </div>
+          <div className={`lg:flex space-x-8 ${open ? 'flex ' : 'hidden'} flex-col lg:flex-row items-center w-full lg:w-auto`}>
+            <div className={`relative flex items-center space-x-1 rounded-lg w-full lg:w-96 p-2 mt-4 lg:mt-0 ${open ? 'bg-[#007569] text-white' : 'bg-white'}`}>
+              <CiSearch className={`${open ? 'text-white font-bold' : 'text-black'}`} />
+              <input
+                placeholder='Search Doctor'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={`focus:outline-none py-2  ${open ? 'w-80 pl-2 rounded-md text-black placeholder-black' : ' w-96 text-black placeholder-black'}`}
+              />
+               {searchQuery && (
+                <RxCross1
+                  className={` cursor-pointer ${open ? 'text-white' : 'text-black'}`}
+                  onClick={clearSearch}
+                />
+              )}
+            </div>
+            <div className='list-none w-full flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-3 mt-4 lg:mt-0'>
+              <Link to="/" className=''><li className={`cursor-pointer flex items-center justify-center ${open ? 'bg-[#007569] text-white p-2 rounded-md' : ''}`}>Home</li></Link>
 
-        <div className={`lg:flex space-x-8 ${open ? 'flex ' : 'hidden'} flex-col lg:flex-row items-center w-full lg:w-auto`}>
-          <div className={`relative flex items-center space-x-1 rounded-lg w-full lg:w-96 p-2 mt-4 lg:mt-0 ${open ? 'bg-[#007569] text-white' : 'bg-white'}`}>
-            <CiSearch className={open ? 'text-white' : 'text-black'} />
-            <input
-              placeholder='Search Doctor'
-              className={`focus:outline-none w-96 ${open ? 'text-white placeholder-white' : 'text-black placeholder-black'}`}
-              value={searchInput}
-              onChange={handleSearchChange}
-            />
-            {searchInput && filteredDoctors.length > 0 && (
-              <div className='absolute top-full left-0 right-0 bg-white text-black shadow-lg rounded-lg mt-1 z-50'>
-                {filteredDoctors.map((doctor) => (
-                  <Link to={`/doctor/${doctor._id}`} key={doctor._id} className='block p-2 hover:bg-gray-200'>
-                    {doctor.name}
-                  </Link>
-                ))}
-              </div>
+              <Link to="/doctors"><li className={`cursor-pointer flex items-center justify-center ${open ? 'bg-[#007569] text-white p-2 rounded-md' : ''}`}>Doctors</li></Link>
+
+            </div>
+            {getdata ? (
+              <Link to="/profile" className={`mt-4 lg:mt-0 ${open ? 'bg-[#007569] w-full flex items-center justify-center text-white p-2 rounded-md' : ''}`}>
+                <FaUser className='text-2xl cursor-pointer' />
+              </Link>
+            ) : (
+              <Link to="/login" className='mt-4 lg:mt-0'>
+                <div className={`px-1 py-2 w-32 rounded-lg cursor-pointer ${open ? 'bg-[#007569] text-white' : 'bg-white text-black'}`}>
+                  Login / Signup
+                </div>
+              </Link>
             )}
           </div>
 
-          <div className='list-none w-full flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-3 mt-4 lg:mt-0'>
-            <Link to="/" className=''><li className={`cursor-pointer flex items-center justify-center ${open ? 'bg-[#007569] text-white p-2 rounded-md' : ''}`}>Home</li></Link>
-            <Link to="/"><li className={`cursor-pointer flex items-center justify-center ${open ? 'bg-[#007569] text-white p-2 rounded-md' : ''}`}>Service</li></Link>
-            <Link to="/doctors"><li className={`cursor-pointer flex items-center justify-center ${open ? 'bg-[#007569] text-white p-2 rounded-md' : ''}`}>Doctors</li></Link>
-            <Link to="/about"><li className={`cursor-pointer flex items-center justify-center ${open ? 'bg-[#007569] text-white p-2 rounded-md' : ''}`}>About Us <IoIosArrowDown className='text-xl' /></li></Link>
-          </div>
+        </div>
+      </div>
 
-          {getdata ? (
-            <Link to="/profile" className={`mt-4 lg:mt-0 ${open ? 'bg-[#007569] w-full flex items-center justify-center text-white p-2 rounded-md' : ''}`}>
-              <FaUser className='text-2xl cursor-pointer' />
-            </Link>
+      {searchQuery && (
+        <div className='bg-white text-black w-full mt-2 rounded-md shadow-lg p-4'>
+          {filteredDoctors.length > 0 ? (
+            <ul>
+              {filteredDoctors.map((doctor) => (
+                <li key={doctor.id} className='p-2 mx-auto w-[90%]  mb-2 border-b last:border-b-0'>
+                  <div className=' border border-gray-700 flex flex-row p-2 gap-3'>
+                  <img className='h-[120px] w-[120px]  rounded-md overflow-hidden  bg-[#017A884D]' src={doctor?.profilepic} alt='doctor' />
+                  <p className=' text-xl  text-gray-600 font-bold'> {doctor.firstname} {doctor.lastname}</p>
+                  </div>
+                </li>
+                
+              ))}
+            </ul>
           ) : (
-            <Link to="/login" className='mt-4 lg:mt-0'>
-              <div className={`px-1 py-2 w-32 rounded-lg cursor-pointer ${open ? 'bg-[#007569] text-white' : 'bg-white text-black'}`}>
-                Login / Signup
-              </div>
-            </Link>
+            <p>No doctors found</p>
           )}
         </div>
-
-           
-          </div>
-
-        </div>
-      
+      )}
     </>
   );
 }
 
 export default NavBar;
-
-
-
-
-
-
-
-
-

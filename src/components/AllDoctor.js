@@ -36,7 +36,7 @@ const AllDoctor = () => {
         setFilteredBookings(matchedBookings);
       }
 
-      console.log(filteredBookings);
+     
     }
     fetchData()
   }, [])
