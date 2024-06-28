@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
-import { RiArrowDropDownLine } from "react-icons/ri";
 import { MdLocationOn } from "react-icons/md";
 import { BiMoney } from "react-icons/bi";
 import { RiToothLine } from "react-icons/ri";

@@ -10,35 +10,36 @@ import { GrLocation } from "react-icons/gr";
 const AllDoctor = () => {
 
   const [filteredBookings, setFilteredBookings] = useState([]);
-  useEffect(()=>{
-      const fetchData = async() =>{
-       // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
-       const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
-         {
-           method: "POST",
-           headers: {
-             "Content-Type": "application/json",
-           },
-           body: JSON.stringify({ }),
-         }
-       );
-       const dataResponse = await data.json()
-   
+  const { saveDoctor, removeSavedDoctor, isDoctorSaved } = useSavedDoctors();
+  useEffect(() => {
+    const fetchData = async () => {
+      // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+      const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}),
+        }
+      );
+      const dataResponse = await data.json()
 
-   
-       const storedId = localStorage.getItem('userId');
-       if (storedId) {
-          // Filter bookings based on both type and _id matching storedId
-          const matchedBookings = dataResponse.filter(el => el.type === "doctor" );
-       
-      
-          setFilteredBookings(matchedBookings);
+      console.log(dataResponse);
+
+      const storedId = localStorage.getItem('userId');
+      if (storedId) {
+        // Filter bookings based on both type and _id matching storedId
+        const matchedBookings = dataResponse.filter(el => el.type === "doctor");
+        console.log('Matched bookings:', matchedBookings);
+
+        setFilteredBookings(matchedBookings);
       }
-  
-       console.log(filteredBookings);
-      }
-      fetchData()
-     },[])
+
+      console.log(filteredBookings);
+    }
+    fetchData()
+  }, [])
 
 
   const [filteredData, setFilteredData] = useState(filteredBookings);
@@ -72,6 +73,13 @@ const AllDoctor = () => {
   }, [searchDoctor, searchLocation, searchGender, searchSpecialist, filteredBookings]);
 
 
+  const toggleSaveDoctor = (doctor) => {
+    if (isDoctorSaved(doctor.id)) {
+      removeSavedDoctor(doctor.id);
+    } else {
+      saveDoctor(doctor);
+    }
+  };
 
   return (
     <div>
@@ -133,8 +141,9 @@ const AllDoctor = () => {
                   <div >{el?.services?.specialities}</div>
                   <div className="text-[#007569]  text-sm font-bold">{el?.specialty}</div>
                   <p className="text-yellow-500 text-xl ">★★★★★</p>
-                  <div className=' flex gap-2 '>
-                    <FaHeart className='border-[0.5px] border-gray-600 rounded-sm p-1 text-xl' /><span> Add to favourites</span>
+                  <div onClick={() => toggleSaveDoctor(el)} className=' flex gap-2  '>
+                    <FaHeart className={`border-[0.5px] border-gray-600 rounded-sm p-1 text-xl ${isDoctorSaved(el.id) ? 'text-red-500' : 'text-black'}`} />
+                    <span>{isDoctorSaved(el.id) ? 'Remove from favourites' : 'Add to favourites'}</span>
                   </div>
                 </div>
               </div>
