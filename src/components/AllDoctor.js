@@ -30,10 +30,11 @@ const AllDoctor = () => {
       const storedId = localStorage.getItem('userId');
       if (storedId) {
         // Filter bookings based on both type and _id matching storedId
-        const matchedBookings = dataResponse.filter(el => el.type === "doctor");
-        console.log('Matched bookings:', matchedBookings);
-
+        const matchedBookings = dataResponse.filter(el => el.type === "doctor" && el.Approved);
+        const set = dataResponse.filter(el => el.Approved)
+        if( set){
         setFilteredBookings(matchedBookings);
+        }
       }
 
 
@@ -151,10 +152,18 @@ const AllDoctor = () => {
                 <div className='flex gap-2'> <IoIosCalendar className='mt-1 text-gray-700' />
                   <p className='flex space-x-1'>{el?.availability.days.map((el) => (
                     <p>{el}</p>
-                  ))}</p></div>
+                  ))}</p>
+                  </div>
                 <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el?.feedbackCount} Feedbacks</div>
-                <div className='flex gap-2 text-[#007569]'> <IoClipboardOutline className='mt-1 font-bold text-gray-700' />Available Now
-
+                <div className='flex gap-2 text-[#007569]'> <IoClipboardOutline className='mt-1 font-bold text-gray-700' />
+                {
+                  el.Available === "true"?(
+                    <p> Available Now</p>
+                  ):(
+                    <p>Not Available</p>
+                  )
+                }
+               
                 </div>
                 <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el?.location}</div>
                 <Link to={`/doctors/profile/${el._id}`}>
