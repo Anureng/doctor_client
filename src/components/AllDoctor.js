@@ -36,7 +36,7 @@ const AllDoctor = () => {
         setFilteredBookings(matchedBookings);
       }
 
-     
+
     }
     fetchData()
   }, [])
@@ -138,8 +138,8 @@ const AllDoctor = () => {
                 <div className=' mx-auto text-start  py-3 justify-between flex flex-col bg-white'>
                   <div className=' textxl md:text-2xl text-gray-600 font-bold'>{el?.firstname}</div>
                   <div className='text-lg text-green-700'><MdOutlineVerified /></div>
-                  <div >{el?.services?.specialities}</div>
-                  <div className="text-[#007569]  text-sm font-bold">{el?.specialty}</div>
+
+                  <div className="text-[#007569]  text-sm font-bold">{el?.services?.specialities}</div>
                   <p className="text-yellow-500 text-xl ">★★★★★</p>
                   <div onClick={() => toggleSaveDoctor(el)} className=' flex gap-2  '>
                     <FaHeart className={`border-[0.5px] border-gray-600 rounded-sm p-1 text-xl ${isDoctorSaved(el.id) ? 'text-red-500' : 'text-black'}`} />
@@ -148,18 +148,15 @@ const AllDoctor = () => {
                 </div>
               </div>
               <div className='space-y-2'>
-                <div className='flex gap-2'> <IoIosCalendar className='mt-1 text-gray-700' />      <p className='flex space-x-1'>{el?.availability.days.map((el)=>(
-                  <p>{el}</p>
-                ))}</p></div>
+                <div className='flex gap-2'> <IoIosCalendar className='mt-1 text-gray-700' />
+                  <p className='flex space-x-1'>{el?.availability.days.map((el) => (
+                    <p>{el}</p>
+                  ))}</p></div>
                 <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el?.feedbackCount} Feedbacks</div>
                 <div className='flex gap-2 text-[#007569]'> <IoClipboardOutline className='mt-1 font-bold text-gray-700' />Available Now
-           
+
                 </div>
                 <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el?.location}</div>
-
-
-
-
                 <Link to={`/doctors/profile/${el._id}`}>
                   <button className='border border-[#007569] text-sm md:text-md text-[#007569] px-1 md:py-2 py-1 rounded-md'>View Profile</button>
                 </Link>
