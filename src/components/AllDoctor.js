@@ -24,13 +24,13 @@ const AllDoctor = () => {
        );
        const dataResponse = await data.json()
    
-       console.log(dataResponse);
+
    
        const storedId = localStorage.getItem('userId');
        if (storedId) {
           // Filter bookings based on both type and _id matching storedId
           const matchedBookings = dataResponse.filter(el => el.type === "doctor" );
-          console.log('Matched bookings:', matchedBookings);
+       
       
           setFilteredBookings(matchedBookings);
       }
@@ -139,9 +139,13 @@ const AllDoctor = () => {
                 </div>
               </div>
               <div className='space-y-2'>
-                <div className='flex gap-2'> <IoIosCalendar className='mt-1 text-gray-700' /> {el?.availableDays}</div>
+                <div className='flex gap-2'> <IoIosCalendar className='mt-1 text-gray-700' />      <p className='flex space-x-1'>{el?.availability.days.map((el)=>(
+                  <p>{el}</p>
+                ))}</p></div>
                 <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el?.feedbackCount} Feedbacks</div>
-                <div className='flex gap-2 text-[#007569]'> <IoClipboardOutline className='mt-1 font-bold text-gray-700' />Available Now</div>
+                <div className='flex gap-2 text-[#007569]'> <IoClipboardOutline className='mt-1 font-bold text-gray-700' />Available Now
+           
+                </div>
                 <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el?.location}</div>
 
 

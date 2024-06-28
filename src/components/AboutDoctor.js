@@ -199,7 +199,7 @@ useEffect(()=>{
                             </div>
                             <div className='flex gap-2'>
                                 <BiSolidShoppingBag className='border-[0.5px] text-[#00A31A] border-[#00000040] rounded-sm text-2xl' />
-                                <span className='text-xl text-gray-700'>{filteredBookings.map((el)=>el.exp.experience)}</span>
+                                {/* <span className='text-xl text-gray-700'>{filteredBookings.map((el)=>el.exp.experience)}</span> */}
                             </div>
                         </div>
                         <div className='flex'>
