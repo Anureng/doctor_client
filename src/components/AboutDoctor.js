@@ -9,67 +9,6 @@ import { GrLocation } from "react-icons/gr";
 import FeedbackModal from './FeedbackPopUp';
 import { useParams, Link } from 'react-router-dom';
 
-const doctors = [
-    {
-        id: 1,
-        name: "Dr. Wanitha",
-        degree: "Dentist",
-        clinicName: "Smile clinic",
-        service: "MBBS",
-        specialty: "Specialty",
-        image: "/doctor1.png",
-        availableDays: "Mon, Wed, Thu, Fri, Sat",
-        feedbackCount: 3,
-        location: "America",
-        experience: "12+ Years Of experience",
-        patientsTreated: 3,
-    },
-    {
-        id: 2,
-        name: "Dr. John Doe",
-        degree: "Dentist",
-        clinicName: "Health",
-        service: "MBBS",
-        specialty: "Neurologist",
-        image: "/doctor1.png",
-        availableDays: "Mon, Wed, Thu, Fri, Sat",
-        feedbackCount: 3,
-        location: "America",
-        experience: "14+ Years Of experience",
-        patientsTreated: 3,
-    },
-    {
-        id: 3,
-        name: "Dr. Wanitha",
-        degree: "Dentist",
-        clinicName: "Life Care",
-        service: "MBBS",
-        specialty: "Specialty",
-        image: "/doctor1.png",
-        availableDays: "Mon, Wed, Thu, Fri, Sat",
-        feedbackCount: 3,
-        location: "America",
-        experience: "7+ Years Of experience",
-        patientsTreated: 3,
-    },
-    {
-        id: 4,
-        name: "Dr. Emily",
-        degree: "Dentist",
-        clinicName: "Smile clinic",
-        service: "MBBS",
-        specialty: "Specialty",
-        image: "/doctor1.png",
-        availableDays: "Mon, Wed, Thu, Fri, Sat",
-        feedbackCount: 3,
-        location: "America",
-        experience: "2+ Years Of experience",
-        patientsTreated: 3,
-    },
-];
-
-
-
 const dummyReviews = [
     {
         recommend: true,
@@ -95,74 +34,69 @@ function AboutDoctor() {
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
     const [feedbacks, setFeedbacks] = useState([...dummyReviews]);
 
-useEffect(()=>{
-    const fetchData = async() =>{
-     // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
-     const data = await fetch("https://doctors-backend-ztcl.onrender.com/getallfeedback",
-       {
-         method: "POST",
-         headers: {
-           "Content-Type": "application/json",
-         },
-         body: JSON.stringify({ }),
-       }
-     );
-     const dataResponse = await data.json()
-     console.log(dataResponse);
- 
- 
-     const storedId = localStorage.getItem('userId');
-     if (storedId) {
-        // Filter bookings based on both type and _id matching storedId
-        const matchedBookings = dataResponse.filter(el => el.doctorid === id );
-        setFeedbacks(matchedBookings)
-    }
+    useEffect(() => {
+        const fetchData = async () => {
+            // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+            const data = await fetch("https://doctors-backend-ztcl.onrender.com/getallfeedback",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({}),
+                }
+            );
+            const dataResponse = await data.json()
+           const storedId = localStorage.getItem('userId');
+            if (storedId) {
+                // Filter bookings based on both type and _id matching storedId
+                const matchedBookings = dataResponse.filter(el => el.doctorid === id);
+                setFeedbacks(matchedBookings)
+            }
+}
+        fetchData()
+    }, [feedbacks])
 
-  
-    }
-    fetchData()
-   },[feedbacks])
 
-  
 
-      const [filteredBookings, setFilteredBookings] = useState([]);
-      const localID = localStorage.getItem('userId');
-  useEffect(()=>{
-      const fetchData = async() =>{
-       // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
-       const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
-         {
-           method: "POST",
-           headers: {
-             "Content-Type": "application/json",
-           },
-           body: JSON.stringify({ }),
-         }
-       );
-       const dataResponse = await data.json()
-   
-   
-       const storedId = localStorage.getItem('userId');
-       if (storedId) {
-          // Filter bookings based on both type and _id matching storedId
-          const matchedBookings = dataResponse.filter(el => el._id === id );
-       
-      
-          setFilteredBookings(matchedBookings);
-      }
-  
-    
-      }
-      fetchData()
-     },[filteredBookings])
-       
+    const [filteredBookings, setFilteredBookings] = useState([]);
+    const localID = localStorage.getItem('userId');
+    useEffect(() => {
+        const fetchData = async () => {
+            // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+            const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({}),
+                }
+            );
+            const dataResponse = await data.json()
+
+
+            const storedId = localStorage.getItem('userId');
+            if (storedId) {
+                // Filter bookings based on both type and _id matching storedId
+                const matchedBookings = dataResponse.filter(el => el._id === id);
+
+
+                setFilteredBookings(matchedBookings);
+            }
+
+
+        }
+        fetchData()
+    }, [filteredBookings])
+
 
     useEffect(() => {
-        const doctor = doctors.find(doc => doc.id === id);
+        const doctor = filteredBookings.find(doc => doc.id === id);
         setSelectedDoctor(doctor);
     }, [id]);
 
- 
+
 
     const openFeedbackModal = () => {
         setShowFeedbackModal(true);
@@ -179,13 +113,13 @@ useEffect(()=>{
             <div className='w-[80%] mx-auto'>
                 <section className='lg:flex lg:flex-row lg:mx-auto md:mx-10 grid grid-cols-1 bg-white p-4 gap-2 rounded-lg border-[1px] border-[#BABABA] mx-auto justify-between'>
                     <div className='lg:w-[25%] p-2 mx-auto bg-white'>
-                        <img className='h-[220px] w-[220px] rounded-md overflow-hidden bg-[#017A884D]' src={filteredBookings.map((el)=>el.profilepic)} alt='doctor' />
+                        <img className='h-[220px] w-[220px] rounded-md overflow-hidden bg-[#017A884D]' src={filteredBookings.map((el) => el.profilepic)} alt='doctor' />
                     </div>
                     <div className='md:w-[20%] mx-auto text-start py-3 justify-between flex flex-col bg-white'>
-                        <div className='text-2xl text-gray-600 font-bold'>{filteredBookings.map((el)=>el.firstname)}</div>
+                        <div className='text-2xl text-gray-600 font-bold'>{filteredBookings.map((el) => el.firstname)}</div>
                         <div className='text-lg text-green-700'><MdOutlineVerified /></div>
-                        <div>{filteredBookings.map((el)=>el.services.specialities)}</div>
-                        <div className="text-[#007569] text-sm font-bold">{filteredBookings.map((el)=>el.services.specialities)}</div>
+                        <div>{filteredBookings.map((el) => el.services.specialities)}</div>
+                        <div className="text-[#007569] text-sm font-bold">{filteredBookings.map((el) => el.services.specialities)}</div>
                         <p className="text-yellow-500 text-xl">★★★★★</p>
                         <div className='flex gap-2'>
                             <FaRegHeart className='border-[0.5px] border-gray-600 rounded-sm p-1 text-xl' /><span>Add to favourites</span>
@@ -204,10 +138,10 @@ useEffect(()=>{
                         </div>
                         <div className='flex'>
                             <button className="flex flex-col p-1 py-2 border-[1px] bg-[#F6F6F6] rounded-l-lg border-[#BABABA]">Clinic
-                                <p className='px-3'>{filteredBookings.map((el)=>el.clinic)}</p>
+                                <p className='px-3'>{filteredBookings.map((el) => el.clinic)}</p>
                             </button>
                             <button className="flex flex-col p-1 py-2 border-[1px] bg-[#F6F6F6] rounded-r-lg border-[#BABABA]">Location
-                                <p className='px-3'>{filteredBookings.map((el)=>el.location)}</p>
+                                <p className='px-3'>{filteredBookings.map((el) => el.location)}</p>
                             </button>
                         </div>
                     </div>
@@ -215,7 +149,7 @@ useEffect(()=>{
                         {/* <div className='flex gap-2'><IoIosCalendar className='mt-1 text-gray-700' /> {selectedDoctor.availableDays}</div> */}
                         {/* <div className='flex gap-2'><GrLocation className='mt-1 font-bold text-gray-700' />{selectedDoctor.feedbackCount} Feedbacks</div> */}
                         <div className='flex gap-2 text-[#007569]'><IoClipboardOutline className='mt-1 font-bold text-gray-700' />Available Now</div>
-                        <div className='flex gap-2'><GrLocation className='mt-1 font-bold text-gray-700' />{filteredBookings.map((el)=>el.location)}</div>
+                        <div className='flex gap-2'><GrLocation className='mt-1 font-bold text-gray-700' />{filteredBookings.map((el) => el.location)}</div>
                         <div className='w-[80%] gap-1 mb-3 font-bold flex flex-row'>
                             <button className="border-[2px] border-[#276A7B] rounded-lg p-1 text-[#276a7b] w-[140px]" onClick={openFeedbackModal}>
                                 Add Feedback
@@ -252,7 +186,7 @@ useEffect(()=>{
                         <div className="mt-4">
                             {activeTab === 'about' && (
                                 <div className="p-4 rounded-lg">
-                                    <h2 className="text-xl pb-10 font-bold">About {filteredBookings.map((el)=>el.firstname)}</h2>
+                                    <h2 className="text-xl pb-10 font-bold">About {filteredBookings.map((el) => el.firstname)}</h2>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                                 </div>
                             )}

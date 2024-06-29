@@ -42,7 +42,7 @@ const SaveDoctor = () => {
                     </div>
                     <div className='flex items-center justify-between w-full'>
                       <div className='space-y-2 '>
-                        <p className=' text-xl  text-gray-600 font-bold'>{el.name}</p>
+                        <p className=' text-xl  text-gray-600 font-bold'>{el.firstname}</p>
                         <p className='text-[#007569]  text-sm font-semibold'>{el.degree}</p>
                         <p>{el.clinicName}</p>
                         <p>⭐⭐⭐⭐⭐</p>
@@ -52,7 +52,7 @@ const SaveDoctor = () => {
                           <span>{isDoctorSaved(el.id) ? <FaHeart className='text-[#007569]  text-xl' /> : <FaHeart className='text-gray-500 text-xl ' />}
                           </span>
                         </div>
-                        <Link to={`/doctors/profile/${el.id}`}>
+                        <Link to={`/doctors/profile/${el._id}`}>
                           <button className='border border-[#007569] text-sm md:text-md text-[#007569] px-1  py-1 rounded-md'>View Profile</button>
                         </Link>
                         <button className='bg-[#276A7B] text-white px-2 py-1 rounded-lg'>Book Now</button>

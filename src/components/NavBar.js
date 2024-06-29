@@ -106,10 +106,11 @@ function NavBar() {
                       </div>
                     </div>
                     <div className='flex flex-col gap-2 '>
-                      <div className='flex gap-2'> <IoIosCalendar className='mt-1 text-gray-700' />
+                      {/* <div className='flex gap-2'> <IoIosCalendar className='mt-1 text-gray-700' />
                         <p className='flex space-x-1'>{doctor?.availability.days.map((el) => (
                           <p>{el}</p>
-                        ))}</p></div>
+                        ))}</p>
+                      </div> */}
                       <div className='flex gap-2 text-[#007569]'> <IoClipboardOutline className='mt-1 font-bold text-gray-700' />Available Now
 
                       </div>

@@ -3,7 +3,6 @@ import { useSavedDoctors } from '../SavedDoctorsContext';
 import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { MdOutlineVerified } from "react-icons/md";
-import { IoIosCalendar } from "react-icons/io";
 import { IoClipboardOutline } from "react-icons/io5";
 import { GrLocation } from "react-icons/gr";
 
@@ -30,12 +29,23 @@ const AllDoctor = () => {
       const storedId = localStorage.getItem('userId');
       if (storedId) {
         // Filter bookings based on both type and _id matching storedId
-        const matchedBookings = dataResponse.filter(el => el.type === "doctor" && el.Approved);
-        const set = dataResponse.filter(el => el.Approved)
-        if( set){
+        const matchedBookings = dataResponse.filter(el => el.type === "doctor");
+        console.log('Matched bookings:', matchedBookings);
+
         setFilteredBookings(matchedBookings);
-        }
       }
+
+      //just for now
+
+      // const storedId = localStorage.getItem('userId');
+      // if (storedId) {
+      //   // Filter bookings based on both type and _id matching storedId
+      //   const matchedBookings = dataResponse.filter(el => el.type === "doctor" && el.Approved);
+      //   const set = dataResponse.filter(el => el.Approved)
+      //   if( set){
+      //   setFilteredBookings(matchedBookings);
+      //   }
+      // }
 
 
     }
@@ -149,11 +159,10 @@ const AllDoctor = () => {
                 </div>
               </div>
               <div className='space-y-2'>
-                <div className='flex gap-2'> <IoIosCalendar className='mt-1 text-gray-700' />
+                {/* <div className='flex gap-2'> <IoIosCalendar className='mt-1 text-gray-700' />
                   <p className='flex space-x-1'>{el?.availability.days.map((el) => (
                     <p>{el}</p>
-                  ))}</p>
-                  </div>
+                  ))}</p></div> */}
                 <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el?.feedbackCount} Feedbacks</div>
                 <div className='flex gap-2 text-[#007569]'> <IoClipboardOutline className='mt-1 font-bold text-gray-700' />
                 {
@@ -163,8 +172,7 @@ const AllDoctor = () => {
                     <p>Not Available</p>
                   )
                 }
-               
-                </div>
+               </div>
                 <div className='flex gap-2'> <GrLocation className='mt-1 font-bold text-gray-700' />{el?.location}</div>
                 <Link to={`/doctors/profile/${el._id}`}>
                   <button className='border border-[#007569] text-sm md:text-md text-[#007569] px-1 md:py-2 py-1 rounded-md'>View Profile</button>
