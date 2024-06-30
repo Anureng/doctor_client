@@ -33,14 +33,27 @@ function NavBar() {
     fetchDoctors();
   }, []);
 
-  const filteredDoctors = doctors.filter(doctor =>
-    doctor.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    doctor.services.specialities.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredDoctors = doctors.filter(doctor =>
+  //   doctor.firstname.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
+  // const clearSearch = () => {
+  //   setSearchQuery("");
+  // };
+
+  const filteredDoctors = doctors.filter(doctor => {
+    // Check if the doctor's first name matches the search query
+    const firstNameMatches = doctor.firstname.toLowerCase().includes(searchQuery.toLowerCase());
+  
+    // Check if the doctor's specialities match the search query
+    const specialitiesMatch = doctor.services && doctor.services.specialities &&
+    doctor.services.specialities.toLowerCase().includes(searchQuery.toLowerCase());
+ return firstNameMatches || specialitiesMatch;
+  });
+  
   const clearSearch = () => {
     setSearchQuery("");
   };
-
+  
   return (
     <>
       <div className={`p-4 ${open ? 'bg-white' : 'bg-transparent'}`}>
@@ -100,7 +113,7 @@ function NavBar() {
                   <div className=' border-2 border-gray-400  justify-between rounded-md flex flex-row p-2 gap-3'>
                     <div className='flex flex-row'> <img className='h-[130px] w-[130px]  rounded-md overflow-hidden items-center py-auto bg-[#017A884D]' src={doctor?.profilepic} alt='doctor' />
                       <div className='flex flex-col justify-between p-2'>
-                        <p className=' text-xl  flex text-gray-600 font-bold'> {doctor.firstname} {doctor.lastname}  <span className='text-lg text-green-700 pl-3'><MdOutlineVerified /></span></p>
+                        <p className=' text-xl  flex text-gray-600 font-bold'> {doctor?.firstname} {doctor.lastname}  <span className='text-lg text-green-700 pl-3'><MdOutlineVerified /></span></p>
                         <div className="text-[#007569]  text-sm font-bold">{doctor?.services?.specialities}</div>
                         <p className="text-yellow-500 text-xl ">★★★★★</p>
                       </div>
@@ -126,6 +139,7 @@ function NavBar() {
             </ul>
           ) : (
             <p>No doctors found</p>
+          
           )}
         </div>
       )}
