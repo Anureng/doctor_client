@@ -67,6 +67,8 @@ function LandingPage() {
     return (selectedLocation === "" || booking.location === selectedLocation) &&
            (selectedDoctor === "" || booking.specialty === selectedDoctor);
   });
+
+  const mainDoctorData = filteredBookings.slice(0,4)
   
   return (
     <>
@@ -241,7 +243,7 @@ function LandingPage() {
           <div className='h-full   z-10 relative '>
             <div className="container   mx-auto p-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10">
-                {doctors.map((doctor, index) => (
+                {mainDoctorData.map((doctor, index) => (
                   <DoctorCard key={index} doctor={doctor} />
                 ))}
               </div>
@@ -258,19 +260,10 @@ function LandingPage() {
               Our users share stories of satisfaction, Trust, and exceptional experience. Explore now!
             </p>
           </div>
-
-
           <div className='relative z-10 '><CustomerFeedback /></div>
         </section>
 
       </main>
-
-
-
-
-
-      
-
 
 <div  className="overflow-hidden  z-[-1] overflow-x-hidden">
 <ConcentricCircles2 className="relative  " />
