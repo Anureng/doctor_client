@@ -64,7 +64,7 @@ const AllDoctor = () => {
 
     if (searchDoctor) {
       filtered = filtered.filter(doctor =>
-        doctor.name.toLowerCase().includes(searchDoctor.toLowerCase())
+        doctor.firstname.toLowerCase().includes(searchDoctor.toLowerCase())
       );
     }
 
@@ -76,9 +76,15 @@ const AllDoctor = () => {
 
     if (searchSpecialist) {
       filtered = filtered.filter(doctor =>
-        doctor.degree.toLowerCase().includes(searchSpecialist.toLowerCase())
+        doctor.services.specialities.toLowerCase().includes(searchSpecialist.toLowerCase())
       );
     }
+    if (searchGender) {
+      filtered = filtered.filter(doctor =>
+        doctor.gender.toLowerCase().includes(searchGender.toLowerCase())
+      );
+    }
+    
 
     setFilteredData(filtered);
   }, [searchDoctor, searchLocation, searchGender, searchSpecialist, filteredBookings]);
