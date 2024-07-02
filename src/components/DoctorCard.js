@@ -16,12 +16,12 @@ const DoctorCard = ({ doctor }) => {
           </div>
           <div className="flex  flex-col md:flex-row gap-2 bspace-x-2">
             <button className="bg-white text-[#007569]  border-2 border-[#007569]  px-4 py-2 rounded">
-              <Link to={doctor._id}>
+            <Link to={`/doctors/profile/${doctor._id}`}>
               View Profile
               </Link>
               </button>
             <button className="bg-[#007569]  text-white px-4 py-2 rounded">
-            <Link to={doctor._id}>
+            <Link to={`/appointment/${doctor._id}`}>
               Book Appointment
               </Link>
             </button>
