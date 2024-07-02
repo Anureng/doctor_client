@@ -8,7 +8,7 @@ import { FiYoutube } from "react-icons/fi";
 function Footer() {
   return (
     <div>
-      <div className=' p-5 flex text-white bg-[#007569]  items-center justify-center'>
+      <div className=' p-5 flex text-white bg-[#007569] z-50  relative  items-center justify-center'>
         <div className='flex flex-col md:flex-row  space-x-10 '>
           <div className='  flex items-center justify-center md:justify-start md:items-start text-3xl font-bold '>
             Doctor +

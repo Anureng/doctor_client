@@ -26,26 +26,26 @@ const AllDoctor = () => {
 
       console.log(dataResponse);
 
-      const storedId = localStorage.getItem('userId');
-      if (storedId) {
-        // Filter bookings based on both type and _id matching storedId
-        const matchedBookings = dataResponse.filter(el => el.type === "doctor");
-        console.log('Matched bookings:', matchedBookings);
-
-        setFilteredBookings(matchedBookings);
-      }
-
-      //just for now
-
       // const storedId = localStorage.getItem('userId');
       // if (storedId) {
       //   // Filter bookings based on both type and _id matching storedId
-      //   const matchedBookings = dataResponse.filter(el => el.type === "doctor" && el.Approved);
-      //   const set = dataResponse.filter(el => el.Approved)
-      //   if( set){
+      //   const matchedBookings = dataResponse.filter(el => el.type === "doctor");
+      //   console.log('Matched bookings:', matchedBookings);
+
       //   setFilteredBookings(matchedBookings);
-      //   }
       // }
+
+     
+
+      const storedId = localStorage.getItem('userId');
+      if (storedId) {
+        // Filter bookings based on both type and _id matching storedId
+        const matchedBookings = dataResponse.filter(el => el.type === "doctor" && el.Approved);
+        const set = dataResponse.filter(el => el.Approved)
+        if( set){
+        setFilteredBookings(matchedBookings);
+        }
+      }
 
 
     }

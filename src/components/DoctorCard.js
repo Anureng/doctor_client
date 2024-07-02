@@ -10,7 +10,7 @@ const DoctorCard = ({ doctor }) => {
           <div>
             <h2 className="text-xl text-gray-600 font-semibold">{doctor.firstname}</h2>
             {/* <p className="text-gray-600">{doctor.services.specialities}</p> */}
-            {/* <p className="text-[#007569]  text-sm font-bold">{doctor.services.specialities}</p> */}
+            <p className="text-[#007569]  text-sm font-bold">{doctor?.services?.specialities}</p>
             <p className="text-yellow-500">★★★★★</p>
           </div>
           <div className="flex  flex-col md:flex-row gap-2 bspace-x-2">

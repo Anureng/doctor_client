@@ -21,12 +21,7 @@ import { NavLink } from 'react-router-dom';
 function LandingPage() {
 
 
-  const doctors = [
-    { name: "Dr. John Doe", image: "/doctor1.png", specialty: "Dentist", service: "MBBS" },
-    { name: "Dr. Jane Smith", image: "/doctor4.png", specialty: "Dentist", service: "MBBS" },
-    { name: "Dr. Alan Brown", image: "/doctor5.png", specialty: "Dentist", service: "MBBS" },
-    { name: "Dr. Emma Wilson", image: "/doctor6.png", specialty: "Dentist", service: "MBBS" }
-  ];
+ 
   const [filteredBookings, setFilteredBookings] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
