@@ -22,6 +22,33 @@ const ScrollingDoctor = () => {
         }
     };
 
+    const [allDoctor , setAllDoctor] = useState([])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            // const response = await axios.post('​https://doctors-backend-ztcl.onrender.com/getallbookings',{})
+            const data = await fetch("https://doctors-backend-ztcl.onrender.com/users",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({}),
+                }
+            );
+            const dataResponse = await data.json()
+           const storedId = localStorage.getItem('userId');
+           
+                // Filter bookings based on both type and _id matching storedId
+                const matchedBookings = dataResponse.filter(el => el.type === "doctor");
+                setAllDoctor(matchedBookings)
+            
+}
+        fetchData()
+    }, [])
+
+    console.log(allDoctor);
+
     return (
         <div className="relative p-7 md:w-[80%] w-full md:mx-auto mt-10">
             <button
@@ -35,7 +62,7 @@ const ScrollingDoctor = () => {
                 className="flex overflow-x-hidden space-x-4 p-4"
                 style={{ scrollSnapType: 'x mandatory' }}
             >
-                {doctors.map((doctor) => (
+                {allDoctor.map((doctor) => (
                     <div key={doctor.id} style={{ flex: '0 0 auto', scrollSnapAlign: 'start' }}>
                         <DoctorCard doctor={doctor} />
                     </div>

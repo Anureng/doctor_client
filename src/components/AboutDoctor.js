@@ -213,7 +213,9 @@ function AboutDoctor() {
                     <div className='md:w-[25%] mx-auto flex gap-4 flex-col bg-white'>
                         {/* <div className='flex gap-2'><IoIosCalendar className='mt-1 text-gray-700' /> {selectedDoctor.availableDays}</div> */}
                         {/* <div className='flex gap-2'><GrLocation className='mt-1 font-bold text-gray-700' />{selectedDoctor.feedbackCount} Feedbacks</div> */}
-                        <div className='flex gap-2 text-[#007569]'><IoClipboardOutline className='mt-1 font-bold text-gray-700' />Available Now</div>
+                        <div className='flex gap-2 text-[#007569]'><IoClipboardOutline className='mt-1 font-bold text-gray-700' />{
+                            filteredBookings.map((el)=>el.Available) ? "Un Available" : " Available"
+                        }</div>
                         <div className='flex gap-2'><GrLocation className='mt-1 font-bold text-gray-700' />{filteredBookings.map((el) => el.location)}</div>
                         <div className='w-[80%] gap-1 mb-3 font-bold flex flex-row'>
                             <button className="border-[2px] border-[#276A7B] rounded-lg p-1 text-[#276a7b] w-[140px]" onClick={openFeedbackModal}>
@@ -252,7 +254,9 @@ function AboutDoctor() {
                             {activeTab === 'about' && (
                                 <div className="p-4 rounded-lg">
                                     <h2 className="text-xl pb-10 font-bold">About {filteredBookings.map((el) => el.firstname)}</h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                    <p>{filteredBookings.map((el)=>(
+                                        <div>{el.Bio}</div>
+                                    ))}</p>
                                 </div>
                             )}
                             {activeTab === 'review' && (
