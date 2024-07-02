@@ -74,21 +74,18 @@ function AboutDoctor() {
                 }
             );
             const dataResponse = await data.json()
-
+            console.log(dataResponse);
 
             const storedId = localStorage.getItem('userId');
             if (storedId) {
                 // Filter bookings based on both type and _id matching storedId
                 const matchedBookings = dataResponse.filter(el => el._id === id);
-
-
+                
                 setFilteredBookings(matchedBookings);
             }
-
-
         }
         fetchData()
-    }, [filteredBookings])
+    }, [])
 
 
     useEffect(() => {
@@ -108,6 +105,74 @@ function AboutDoctor() {
 
 
 
+    const handleSavedData = async () => {
+        try {
+            // Fetch users data
+            const response = await fetch("https://doctors-backend-ztcl.onrender.com/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({}),
+            });
+            
+            const usersData = await response.json();
+            console.log(usersData);
+    
+            // Filter bookings based on both type and _id matching storedId
+            const matchedBooking = usersData.find(el => el._id === id);
+            console.log(matchedBooking);
+    
+            if (matchedBooking) {
+                const { email, firstname, lastname, location, gender, type, profilepic, language, fees, clinic } = matchedBooking;
+    
+                const saveResponse = await fetch("https://doctors-backend-ztcl.onrender.com/save", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email,
+                        userid: localID,
+                        firstname,
+                        lastname,
+                        Phoneno: 0,
+                        location,
+                        startas: "",
+                        Bio: "",
+                        dob: "",
+                        gender,
+                        address: "",
+                        type,
+                        profilepic,
+                        bloodgroup: "",
+                        description: "",
+                        services: {},
+                        edu: {},
+                        exp: {},
+                        language,
+                        totalexp: "",
+                        fees,
+                        clinic
+                    }),
+                });
+    
+                if (saveResponse.ok) {
+                    alert("Added successfully");
+                } else {
+                    alert("Failed to add");
+                }
+            } else {
+                console.log("No matching booking found");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    
+
+
+
     return (
         <>
             <div className='w-[80%] mx-auto'>
@@ -121,7 +186,7 @@ function AboutDoctor() {
                         <div>{filteredBookings.map((el) => el.services.specialities)}</div>
                         <div className="text-[#007569] text-sm font-bold">{filteredBookings.map((el) => el.services.specialities)}</div>
                         <p className="text-yellow-500 text-xl">★★★★★</p>
-                        <div className='flex gap-2'>
+                        <div onClick={()=>handleSavedData()}  className='flex gap-2'>
                             <FaRegHeart className='border-[0.5px] border-gray-600 rounded-sm p-1 text-xl' /><span>Add to favourites</span>
                         </div>
                     </div>
@@ -133,7 +198,7 @@ function AboutDoctor() {
                             </div>
                             <div className='flex gap-2'>
                                 <BiSolidShoppingBag className='border-[0.5px] text-[#00A31A] border-[#00000040] rounded-sm text-2xl' />
-                                {/* <span className='text-xl text-gray-700'>{filteredBookings.map((el)=>el.exp.experience)}</span> */}
+                                <span className='text-xl text-gray-700'>{filteredBookings.map((el)=>el.exp.experience)}</span>
                             </div>
                         </div>
                         <div className='flex'>
