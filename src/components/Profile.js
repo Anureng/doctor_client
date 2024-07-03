@@ -454,7 +454,7 @@ const Profile = () => {
       )
       }
 
-      <div className='md:w-3/5 space-y-3'>
+      <div className='lg:w-3/5 w-full space-y-3'>
         <Appointment />
         <SaveDoctor />
       </div>

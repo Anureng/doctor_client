@@ -1,28 +1,69 @@
-import React, { useState } from 'react';
-import { FaCalendarPlus } from 'react-icons/fa';
+
+import React, { useState, useEffect } from 'react';
+import { FaCalendarPlus, FaCheckCircle } from 'react-icons/fa';
 import { FaChevronDown } from 'react-icons/fa6';
 import { IoIosArrowUp } from 'react-icons/io';
+import { MdDateRange } from "react-icons/md";
+import { IoIosTime } from "react-icons/io";
 
 const Appointment = () => {
   const [dropDown, setDropDown] = useState(false);
-  const [currentView, setCurrentView] = useState('upcoming');
+  const [data, setData] = useState([]);
+  const [filter, setFilter] = useState('upcoming'); // New state for filter
 
-  const upcoming = [
-    { id: 1, name: "guf", degree: "Dentist", clinicName: "kugif", time: "11:45 pm", Date: "02 Jan" , upcoming : true},
-    { id: 2, name: "guf", degree: "Dentist", clinicName: "kugif", time: "11:45 pm", Date: "02 Jan" , upcoming : true},
-  ];
+  const fetchData = async () => {
+    try {
+      const response = await fetch("https://doctors-backend-ztcl.onrender.com/getallbookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setData(data);
+      } else {
+        alert("Something went wrong. Please login again.");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
-  const completed = [
-    { id: 1, name: "guf", degree: "anurag", clinicName: "kugif", time: "11:45 pm", Date: "02 Jan" , completed:true },
-    { id: 2, name: "guf", degree: "Dentist", clinicName: "kugif", time: "11:45 pm", Date: "02 Jan" ,completed:true},
-  ];
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const canceled = [
-    { id: 1, name: "guf", degree: "Kok", clinicName: "kugif", time: "11:45 pm", Date: "02 Jan",canceled : true },
-    { id: 2, name: "guf", degree: "Dentist", clinicName: "kugif", time: "11:45 pm", Date: "02 Jan",canceled : true },
-  ];
+  const userId = localStorage.getItem("userId");
 
-  const appointments = { upcoming, completed, canceled };
+
+  // const handleDelete = async (id) => {
+  //   try {
+  //     const response = await fetch(`https://doctors-backend-ztcl.onrender.com/deletebooking/${id}`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       setData(data.filter(appointment => appointment._id !== id));
+  //     } else {
+  //       alert('Failed to delete the appointment.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error deleting appointment:', error);
+  //   }
+  // };
+
+  const filteredData = data.filter(e => {
+    const appointmentDate = new Date(e.date);
+    const today = new Date();
+    if (filter === 'upcoming') {
+      return appointmentDate >= today && e.userid === userId;
+    } else {
+      return appointmentDate < today && e.userid === userId;
+    }
+  });
 
   return (
     <div className={`flex p-3 justify-between transition-all duration-300 ${dropDown ? 'bg-white text-black h-fit border border-[#276A7B] p-0 items-start' : 'bg-[#276A7B] text-white h-fit'}`}>
@@ -36,34 +77,54 @@ const Appointment = () => {
               </div>
               <div className='flex items-center space-x-2'>
                 <p>|</p>
-                <button onClick={() => setDropDown(false)}><FaChevronDown className='text-2xl font-bold '/></button>
+                <button onClick={() => setDropDown(false)}><FaChevronDown className='text-2xl font-bold ' /></button>
               </div>
             </div>
-            <div>
-              <div className='flex justify-evenly my-2'>
-                <button className='border px-2 py-1 border-[#276A7B] rounded-lg' onClick={() => setCurrentView('upcoming')}>Upcoming</button>
-                <button className='border px-2 py-1 border-[#276A7B] rounded-lg' onClick={() => setCurrentView('canceled')}>Canceled</button>
-                <button className='border px-2 py-1 border-[#276A7B] rounded-lg' onClick={() => setCurrentView('completed')}>Completed</button>
-              </div>
-              {appointments[currentView].map((el) => (
-                <div key={el.id} className='flex p-3'>
-                  <div>
+            <div className='flex justify-center space-x-4 p-3'>
+              <button
+                className={`py-2 px-4 rounded ${filter === 'upcoming' ? 'bg-[#007569] text-white' : 'bg-gray-200 text-black'}`}
+                onClick={() => setFilter('upcoming')}
+              >
+                Upcoming
+              </button>
+              <button
+                className={`py-2 px-4 rounded ${filter === 'completed' ? 'bg-[#007569] text-white' : 'bg-gray-200 text-black'}`}
+                onClick={() => setFilter('completed')}
+              >
+                Completed
+              </button>
+            </div>
+            <div className='overflow-y-scroll lg:h-[350px] md:h-[200px] h-[200px]'>
+              {filteredData.map((el) => (
+                <div key={el._id} className='flex p-3 border-[2px] rounded-md m-1 border-gray-400'>
+                  <div className='flex flex-row gap-2'>
                     <img src='/login.png' className='w-24 h-24' alt='Doctor' />
-                  </div>
-                  <div className='flex items-center justify-between w-full'>
-                    <div>
-                      <div className='space-y-2'>
-                        <p>{el.name}</p>
-                        <p>{el.degree}</p>
-                        <p>{el.clinicName}</p>
-                        <p>⭐⭐⭐⭐⭐</p>
+                    <div className='space-y-2 justify-between flex flex-col md:flex-row'>
+                      <div className='justify-between flex flex-col'>
+                        <p className='text-xl text-black font-semibold'> Dr {el.doctorname}</p>
+                        <p className='text-gray-900 font-semibold'>
+                          Problem : {el.Currentproblem ? el.Currentproblem : 'not defined'}
+                        </p>
+                        <p className='text-[#007569] font-semibold'>consultation fee : {el.fee}</p>
+                      </div>
+                      <div className='md:pl-10 items-center'>
+                        <p className='text-gray-600 text-sm flex gap-2'><MdDateRange className='text-[#007569] text-xl' />  {el.date.substr(0, 10)}</p>
+                        <p className='text-gray-600 text-sm flex gap-2'><IoIosTime className='text-[#007569] text-xl' /> {el.time}</p>
+                      </div>
+                      <div className='lg:pl-[120px] md:pl-16 p-0'> {filter === 'upcoming' ? (
+                        <div className='flex lg:pl-[120px] md:pl-16 p-0 gap-2 mt-2'>
+                          <button className='py-1 px-3  text-[#007569] font-semibold rounded'>Confirmed</button>
+                          {/* <button className='py-1 px-3 bg-red-500 text-white rounded' onClick={() => handleDelete(el._id)}>Delete</button> */}
+                        </div>
+                      ) : (
+                        <div className='lg:pl-[120px] md:pl-16 p-0 flex items-center gap-2 mt-2'>
+                          <FaCheckCircle className='text-[#007569] text-xl' />
+                          <p className='text-black font-semibold'>Completed</p>
+                        </div>
+                      )}
                       </div>
                     </div>
-                    <div className='space-x-3'>
-                    {el.upcoming && <p>Upcoming</p>}
-                    {el.canceled && <p className='text-red-400 foont-bold'>Canceled</p>}
-                    {el.completed && <p className='text-green-400 foont-bold'>Completed</p>}
-                    </div>
+
                   </div>
                 </div>
               ))}
@@ -78,7 +139,7 @@ const Appointment = () => {
           </div>
           <div className='flex items-center space-x-2'>
             <p>|</p>
-            <button onClick={() => setDropDown(true)}><IoIosArrowUp className='text-2xl font-bold '/></button>
+            <button onClick={() => setDropDown(true)}><IoIosArrowUp className='text-2xl font-bold ' /></button>
           </div>
         </>
       )}
