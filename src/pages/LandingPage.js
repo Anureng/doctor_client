@@ -107,7 +107,7 @@ function LandingPage() {
             {
               filteredBookings.map((el)=>(
 
-                <option value="Location1">{el.location}</option>
+                <option value={el.location}>{el.location}</option>
               ))
             }
             
@@ -122,7 +122,7 @@ function LandingPage() {
             {
               filteredBookings.map((el)=>(
 
-                <option value="Location1">{el.services?.specialities}</option>
+                <option value={el.services.specialities}>{el.services?.specialities}</option>
               ))
             }
           </select>

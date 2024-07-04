@@ -7,66 +7,66 @@ import { Link } from 'react-router-dom';
 
 const SaveDoctor = () => {
 
-  const [savedDoctors , setSavedDoctors] = useState()
+  const [savedDoctors, setSavedDoctors] = useState()
 
   const [dropDown, setDropDown] = useState(false);
 
-  useEffect(()=>{
-    const handleSavedData =async () =>{
+  useEffect(() => {
+    const handleSavedData = async () => {
 
       try {
-      
-          const data = await fetch("https://doctors-backend-ztcl.onrender.com/getsaved",
-              {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({}),
-              }
-          );
 
-          const dataResponse = await data.json()
+        const data = await fetch("https://doctors-backend-ztcl.onrender.com/getsaved",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({}),
+          }
+        );
 
-          console.log(dataResponse);
+        const dataResponse = await data.json()
 
-          const storedId = localStorage.getItem('userId');
-         
-              // Filter bookings based on both type and _id matching storedId
-              const matchedBookings = dataResponse.filter(el => el.userid === storedId);
-              console.log(matchedBookings);
-              setSavedDoctors(matchedBookings);
-          console.log(savedDoctors);
+        console.log(dataResponse);
+
+        const storedId = localStorage.getItem('userId');
+
+        // Filter bookings based on both type and _id matching storedId
+        const matchedBookings = dataResponse.filter(el => el.userid === storedId);
+        console.log(matchedBookings);
+        setSavedDoctors(matchedBookings);
+        console.log(savedDoctors);
       } catch (error) {
-       console.log(error);   
+        console.log(error);
       }
-  
-  }
 
-  handleSavedData()
-  },[])
+    }
+
+    handleSavedData()
+  }, [])
 
 
-  const removeLiked = async(id) =>{
+  const removeLiked = async (id) => {
     try {
       const data = await fetch(`https://doctors-backend-ztcl.onrender.com/deletesaved/${id}`,
         {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(),
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(),
         }
-    );
+      );
 
-    console.log(id);
+      console.log(id);
 
-    if(data.ok){
-      alert("removed Liked")
-    }
-    else{
-      alert("Please try again")
-    }
+      if (data.ok) {
+        alert("removed Liked")
+      }
+      else {
+        alert("Please try again")
+      }
     } catch (error) {
       console.log(error);
     }
@@ -106,14 +106,16 @@ const SaveDoctor = () => {
                         <p>⭐⭐⭐⭐⭐</p>
                       </div>
                       <div className='space-x-3'>
-                        <div  className='flex gap-2 pb-[80px] pl-[120px] cursor-pointer'>
-                          <span><FaHeart onClick={()=>removeLiked(el._id)} className='text-gray-500 text-xl ' />  
+                        <div className='flex gap-2 pb-[80px] pl-[120px] cursor-pointer'>
+                          <span><FaHeart onClick={() => removeLiked(el._id)} className='text-[#007569] text-xl ' />
                           </span>
                         </div>
                         <Link to={`/doctors/profile/${el._id}`}>
                           <button className='border border-[#007569] text-sm md:text-md text-[#007569] px-1  py-1 rounded-md'>View Profile</button>
                         </Link>
-                        <button className='bg-[#276A7B] text-white px-2 py-1 rounded-lg'>Book Now</button>
+                        <Link to={`/appointment/${el._id}`}>
+                          <button className='bg-[#276A7B] text-white px-2 py-1 rounded-lg'>Book Now</button>
+                        </Link>
                       </div>
                     </div>
                   </div>
