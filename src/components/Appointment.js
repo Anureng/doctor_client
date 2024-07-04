@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { FaCalendarPlus, FaCheckCircle } from 'react-icons/fa';
 import { FaChevronDown } from 'react-icons/fa6';
@@ -22,6 +21,7 @@ const Appointment = () => {
       if (response.ok) {
         const data = await response.json();
         setData(data);
+        console.log(data)
       } else {
         alert("Something went wrong. Please login again.");
       }
@@ -36,35 +36,15 @@ const Appointment = () => {
 
   const userId = localStorage.getItem("userId");
 
-
-  // const handleDelete = async (id) => {
-  //   try {
-  //     const response = await fetch(`https://doctors-backend-ztcl.onrender.com/deletebooking/${id}`, {
-  //       method: 'DELETE',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-  //     if (response.ok) {
-  //       setData(data.filter(appointment => appointment._id !== id));
-  //     } else {
-  //       alert('Failed to delete the appointment.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error deleting appointment:', error);
-  //   }
-  // };
-
   const filteredData = data.filter(e => {
-    const appointmentDate = new Date(e.date);
-    const today = new Date();
     if (filter === 'upcoming') {
-      return appointmentDate >= today && e.userid === userId;
+      return (e.Status === "Upcoming" || !e.Status) && e.userid === userId;
+    } else if (filter === 'completed') {
+      return e.Status === 'Completed' && e.userid === userId;
     } else {
-      return appointmentDate < today && e.userid === userId;
+      return e.Status === "Cancelled" && e.userid === userId;
     }
   });
-
   return (
     <div className={`flex p-3 justify-between transition-all duration-300 ${dropDown ? 'bg-white text-black h-fit border border-[#276A7B] p-0 items-start' : 'bg-[#276A7B] text-white h-fit'}`}>
       {dropDown ? (
@@ -93,6 +73,12 @@ const Appointment = () => {
               >
                 Completed
               </button>
+              <button
+                className={`py-2 px-4 rounded ${filter === 'cancelled' ? 'bg-[#007569] text-white' : 'bg-gray-200 text-black'}`}
+                onClick={() => setFilter('cancelled')}
+              >
+                Cancelled
+              </button>
             </div>
             <div className='overflow-y-scroll lg:h-[350px] md:h-[200px] h-[200px]'>
               {filteredData.map((el) => (
@@ -114,17 +100,20 @@ const Appointment = () => {
                       <div className='lg:pl-[120px] md:pl-16 p-0'> {filter === 'upcoming' ? (
                         <div className='flex lg:pl-[120px] md:pl-16 p-0 gap-2 mt-2'>
                           <button className='py-1 px-3  text-[#007569] font-semibold rounded'>Confirmed</button>
-                          {/* <button className='py-1 px-3 bg-red-500 text-white rounded' onClick={() => handleDelete(el._id)}>Delete</button> */}
                         </div>
-                      ) : (
+                      ) : filter === 'completed' ? (
                         <div className='lg:pl-[120px] md:pl-16 p-0 flex items-center gap-2 mt-2'>
                           <FaCheckCircle className='text-[#007569] text-xl' />
                           <p className='text-black font-semibold'>Completed</p>
                         </div>
+                      ) : (
+                        <div className='lg:pl-[120px] md:pl-16 p-0 flex items-center gap-2 mt-2'>
+                          <FaCheckCircle className='text-red-500 text-xl' />
+                          <p className='text-black font-semibold'>Cancelled</p>
+                        </div>
                       )}
                       </div>
                     </div>
-
                   </div>
                 </div>
               ))}
@@ -148,3 +137,4 @@ const Appointment = () => {
 };
 
 export default Appointment;
+
