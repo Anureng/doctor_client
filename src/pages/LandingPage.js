@@ -1,7 +1,6 @@
-
-import React, { useCallback, useEffect, useState } from 'react'
-import NavBar from '../components/NavBar'
-import Footer from '../components/Footer'
+import React, { useCallback, useEffect, useState } from 'react';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 import { MdLocationOn } from "react-icons/md";
 import { BiMoney } from "react-icons/bi";
 import { RiToothLine } from "react-icons/ri";
@@ -9,9 +8,9 @@ import { FaRegEye } from "react-icons/fa";
 import { PiBrain } from "react-icons/pi";
 import DoctorCard from '../components/DoctorCard';
 import { MdOutlineAccessTimeFilled } from "react-icons/md";
-import ConcentricCircles from '../components/ConcentricCircle/ConcentricCircles'
-import ConcentricCircles2 from '../components/ConcentricCircle/ConcentricCircles2'
-import ConcentricCircle3 from '../components/ConcentricCircle/ConcentricCircle3'
+import ConcentricCircles from '../components/ConcentricCircle/ConcentricCircles';
+import ConcentricCircles2 from '../components/ConcentricCircle/ConcentricCircles2';
+import ConcentricCircle3 from '../components/ConcentricCircle/ConcentricCircle3';
 import CustomerFeedback from '../components/CustomerFeedback';
 import ConcentricCircle4 from '../components/ConcentricCircle/ConcentricCircle4';
 import ConcentricCircle5 from '../components/ConcentricCircle/ConcentricCircle5';
@@ -19,20 +18,25 @@ import ConcentricCircle6 from '../components/ConcentricCircle/ConcentricCircle6'
 import { NavLink } from 'react-router-dom';
 
 function LandingPage() {
-
-
- 
   const [filteredBookings, setFilteredBookings] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
 
   useEffect(() => {
     if (navigator.geolocation) {
-      console.log("Location Detected");
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log("Location Detected: ", position.coords);
+          // You can use position.coords.latitude and position.coords.longitude
+        },
+        (error) => {
+          console.error("Error detecting location: ", error);
+        }
+      );
     } else {
       console.log("Geolocation is not supported by this browser.");
     }
-    }, []);
+  }, []);
 
   const fetchData = useCallback(async () => {
     const data = await fetch("https://doctors-backend-ztcl.onrender.com/users", {
@@ -43,7 +47,6 @@ function LandingPage() {
       body: JSON.stringify({}),
     });
     const dataResponse = await data.json();
-    
 
     const storedId = localStorage.getItem('userId');
     if (storedId) {
@@ -51,7 +54,6 @@ function LandingPage() {
 
       setFilteredBookings(matchedBookings);
     }
-    
   }, [filteredBookings]);
 
   useEffect(() => {
@@ -71,12 +73,12 @@ function LandingPage() {
            (selectedDoctor === "" || booking.specialty === selectedDoctor);
   });
 
-  const mainDoctorData = filteredBookings.slice(0,4)
-  
+  const mainDoctorData = filteredBookings.slice(0, 4);
+
   return (
     <>
       <NavBar />
-      <main className='relative  lg:w-[85%] mt-10 mb-10 mx-auto '>
+      <main className='relative lg:w-[85%] mt-10 mb-10 mx-auto '>
         {/* main image */}
         <div className='flex flex-row'>
           <section className='w-[50%] flex flex-col justify-center'>
@@ -114,8 +116,7 @@ function LandingPage() {
             {/* Add your location options here */}
             {
               filteredBookings.map((el)=>(
-
-                <option value={el.location}>{el.location}</option>
+                <option key={el.location} value={el.location}>{el.location}</option>
               ))
             }
             
@@ -129,8 +130,7 @@ function LandingPage() {
             {/* Add your doctor specialty options here */}
             {
               filteredBookings.map((el)=>(
-
-                <option value={el.services.specialities}>{el.services?.specialities}</option>
+                <option key={el.services.specialities} value={el.services.specialities}>{el.services?.specialities}</option>
               ))
             }
           </select>
@@ -268,18 +268,17 @@ function LandingPage() {
 
       </main>
 
-<div  className="overflow-hidden  z-[-1] overflow-x-hidden">
-<ConcentricCircles2 className="relative  " />
-<ConcentricCircle3/>
-<ConcentricCircle4/>
-<ConcentricCircle5/>
-<ConcentricCircle6/>
+      <div className="overflow-hidden z-[-1] overflow-x-hidden">
+        <ConcentricCircles2 className="relative" />
+        <ConcentricCircle3 />
+        <ConcentricCircle4 />
+        <ConcentricCircle5 />
+        <ConcentricCircle6 />
+      </div>
 
-</div>
-    
       <Footer className="absolute" />
     </>
-  )
+  );
 }
 
-export default LandingPage
+export default LandingPage;
