@@ -128,11 +128,11 @@ function LandingPage() {
           >
             <option value="">Select Doctors</option>
             {/* Add your doctor specialty options here */}
-            {/* {
-           filteredBookings &&   filteredBookings.map((el)=>(
+            {
+           filteredBookings.map((el)=>el.services) &&   filteredBookings.map((el)=>(
                 <option key={el.services.specialities} value={el.services.specialities}>{el.services?.specialities}</option>
               ))
-            } */}
+            }
           </select>
           <NavLink to="/doctors">
           <button className='bg-[#007569] px-2 md:px-5 py-0.5 rounded-md text-sm text-white'>
