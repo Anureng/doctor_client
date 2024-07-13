@@ -26,6 +26,14 @@ function LandingPage() {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      console.log("Location Detected");
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+    }, []);
+
   const fetchData = useCallback(async () => {
     const data = await fetch("https://doctors-backend-ztcl.onrender.com/users", {
       method: "POST",
