@@ -129,8 +129,10 @@ function LandingPage() {
             <option value="">Select Doctors</option>
             {/* Add your doctor specialty options here */}
             {
-           filteredBookings.map((el)=>el.services) &&   filteredBookings.map((el)=>(
-                <option key={el.services.specialities} value={el.services.specialities}>{el.services?.specialities}</option>
+              filteredBookings.map((el) => el.services?.specialities && (
+                <option key={el.services.specialities} value={el.services.specialities}>
+                  {el.services.specialities}
+                </option>
               ))
             }
           </select>
