@@ -17,7 +17,7 @@ const CustomerFeedback = () => {
       });
       const dataResponse = await response.json();
       setFeedbacks(dataResponse);
-      console.log(dataResponse);
+     
     };
 
     const fetchUsers = async () => {
@@ -34,7 +34,7 @@ const CustomerFeedback = () => {
         imageMap[user._id] = user.profilepic;
       });
       setImageData(imageMap);
-      console.log(dataResponse);
+    
     };
 
     fetchFeedbacks();
