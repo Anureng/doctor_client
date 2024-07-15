@@ -80,7 +80,7 @@ function LandingPage() {
       <NavBar />
       <main className='relative lg:w-[85%] mt-10 mb-10 mx-auto '>
         {/* main image */}
-        <div className='flex flex-row'>
+        <div className='flex relative z-10 flex-row'>
           <section className='w-[50%] flex flex-col justify-center'>
             <div className='flex pl-10 flex-col md:text-4xl text-2xl lg:text-6xl font-bold text-start'>
               <p>Search doctor,</p>
@@ -149,7 +149,7 @@ function LandingPage() {
         </div>
 
 
-        <section className='flex flex-col mx-auto mb-10 gap-20 lg:gap-40 mt-20 lg:flex-row font-mono items-center justify-between'>
+        <section className='flex relative z-10 flex-col mx-auto mb-10 gap-20 lg:gap-40 mt-20 lg:flex-row font-mono items-center justify-between'>
           {['Select the location and search near by doctors', 'Schedule and Book your date and time for appointment', 'Easy way to make payment in multiple Getways'].map((text, index) => (
             <div key={index} className='relative flex lg:w-[28%] md:w-[50%] w-[70%] flex-col'>
               <div className='relative'>
@@ -278,7 +278,7 @@ function LandingPage() {
         <ConcentricCircle6 />
       </div>
 
-      <Footer className="absolute" />
+      <Footer className=" relative z-10" />
     </>
   );
 }
