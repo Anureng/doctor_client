@@ -5,7 +5,7 @@ const DoctorCard = ({ doctor }) => {
   console.log(doctor);
   return (
     <div className="bg-white rounded-lg  shadow-gray-600 shadow-md border-2 border-gray-400 overflow-hidden flex">
-      <img className="w-[200px] bg-[#276A7B4D] h-[220px] h-full overflow-hidden object-cover" src={doctor.profilepic} alt={doctor.firstname} />
+      <img className="w-[200px] bg-[#276A7B4D]  h-full overflow-hidden object-cover" src={doctor.profilepic} alt={doctor.firstname} />
       <div className="flex-1 p-4">
         <div className="flex flex-col justify-between">
           <div>
